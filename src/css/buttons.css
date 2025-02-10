@@ -1,0 +1,8 @@
+.button {
+  cursor: pointer;
+}
+
+.nav-button {
+  padding: var(--small) var(--medium);
+  font-size: 24px;
+}
