@@ -1,0 +1,23 @@
+.panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  width: 100%;
+  justify-items: center;
+}
+.panel :is(.panel__title, .panel__add) {
+  text-transform: capitalize;
+}
+
+.panel__title {
+  grid-column: 2;
+}
+
+.panel__add {
+  justify-self: end;
+}
+
+.panel__button{
+  font-size: 18px;
+  font-weight: 700;
+}

@@ -11,6 +11,8 @@
   <link rel="stylesheet" href="./src/css/style.css">
   <link rel="stylesheet" href="./src/css/nav.css">
   <link rel="stylesheet" href="./src/css/buttons.css">
+  <link rel="stylesheet" href="./src/css/panel.css">
+  <link rel="stylesheet" href="./src/css/formModal.css">
 
   <title>Vite App</title>
 </head>
@@ -32,9 +34,110 @@
     </section>
 
   </main>
+  <footer>
+
+  </footer>
+
+  <div class="form-modal form-modal__students" data-id="students">
+    <form class="form-modal__form form form--students">
+      <div class="form-modal__close">
+        X
+      </div>
+      <h3>Add a new student</h3>
+      <div class="form__element">
+        <input class="form__input" type="text" id="name" name="name" placeholder="Name" />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="email" id="email" name="email" placeholder="Email" />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="tel" id="phone" name="phone" placeholder="Phone" required />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="text" id="address" name="address" placeholder="Address" required />
+      </div>
+      <div class="form__element form__courses">
+        <h3>Select courses you want to enroll in</h3>
+        <select class="form__input form__select" name="course" id="course">
+          <option value="none">Select Course</option>
+          <option value="1">Course 1</option>
+          <option value="2">Course 2</option>
+          <option value="3">Course 3</option>
+        </select>
+        <select class="form__input form__select" name="course" id="course">
+          <option value="none">Select Course</option>
+          <option value="1">Course 1</option>
+          <option value="2">Course 2</option>
+          <option value="3">Course 3</option>
+        </select>
+        <select class="form__input form__select" name="course" id="course">
+          <option value="none">Select Course</option>
+          <option value="1">Course 1</option>
+          <option value="2">Course 2</option>
+          <option value="3">Course 3</option>
+        </select>
+      </div>
+      <button class="button form__button button">Add</button>
+    </form>
+  </div>
+
+  <div class="form-modal form-modal__courses" data-id="courses">
+    <form class="form-modal__form form form--courses" data-id="courses">
+      <div class="form__element">
+        <input class="form__input" type="text" id="name" name="name" placeholder="Full name" />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="text" id="code" name="code" placeholder="Code" />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="number" id="credit" name="credit" placeholder="Credit" required />
+      </div>
+      <button class="button form__button button">Add</button>
+    </form>
+  </div>
+
+  <div class="form-modal form-modal__instructors" data-id="instructors">
+    <form class="form-modal__form form form--instructors">
+      <div class="form__element">
+        <input class="form__input" type="text" id="name" name="name" placeholder="Name" />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="email" id="email" name="email" placeholder="Email" />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="tel" id="phone" name="phone" placeholder="Phone" required />
+      </div>
+      <div class="form__element">
+        <input class="form__input" type="text" id="address" name="address" placeholder="Address" required />
+      </div>
+      <div class="form__element form__courses">
+        <h3>Select courses you want to enroll in</h3>
+        <select class="form__input form__select" name="course" id="course">
+          <option value="none">Assign a course</option>
+          <option value="1">Course 1</option>
+          <option value="2">Course 2</option>
+          <option value="3">Course 3</option>
+        </select>
+        <select class="form__input form__select" name="course" id="course">
+          <option value="none">Assign a course</option>
+          <option value="1">Course 1</option>
+          <option value="2">Course 2</option>
+          <option value="3">Course 3</option>
+        </select>
+        <select class="form__input form__select" name="course" id="course">
+          <option value="none">Assign a course</option>
+          <option value="1">Course 1</option>
+          <option value="2">Course 2</option>
+          <option value="3">Course 3</option>
+        </select>
+      </div>
+      <button class="button form__button">Add</button>
+    </form>
+  </div>
+
+  </div>
   <script type="module" src="/src/js/app.js"></script>
 </body>
-
 
 
 </html>
