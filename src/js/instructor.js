@@ -5,10 +5,6 @@ class Instructor extends Person {
         super(name, email, phone, address);
         this.assignedCourses = [];
     }
-
-    assignCourse(course) {
-        this.assignedCourses.push(course);
-    }
 }
 
 export default Instructor;

@@ -9,12 +9,5 @@ class Course {
     this.students = [];
     this.instructors = [];
   }
-  addStudent(student) {
-    this.students.push(student);
-}
-
-addInstructor(instructor) {
-    this.instructors.push(instructor);
-}
 }
 export default Course;
