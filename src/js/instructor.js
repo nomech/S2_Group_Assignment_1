@@ -1,10 +1,13 @@
 import Person from "./person";
 
 class Instructor extends Person {
-    constructor(name, email, phone, adress, id, instruct) {
-        super(name, email, phone, adress, id);
-        this.instruct = instruct;
-        
+    constructor(name, email, phone, address) {
+        super(name, email, phone, address);
+        this.assignedCourses = [];
+    }
+
+    assignCourse(course) {
+        this.assignedCourses.push(course);
     }
 }
 
