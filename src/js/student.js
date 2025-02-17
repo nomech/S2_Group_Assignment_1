@@ -6,10 +6,6 @@ class Student extends Person {
         this.enrolledCourses = [];
         
     }
-
-    enrollCourse(course) {
-        this.enrolledCourses.push(course);
-    }
 }
 
 export default Student;
