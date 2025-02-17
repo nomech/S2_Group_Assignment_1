@@ -33,10 +33,18 @@ class Ui {
   }
 
   static openForm(form, id) {
-    console.log(form);
+    
     
     if (form.dataset.id === id) {
       form.classList.add("form-modal--show");
+    }
+  }
+
+  static closeForm(form, id) {
+    
+    
+    if (form.dataset.id === id) {
+      form.classList.remove("form-modal--show");
     }
   }
 
