@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid';
 
 class Course {
   constructor(name, code, credit) {
@@ -8,6 +8,8 @@ class Course {
     this.credit = credit;
     this.students = [];
     this.instructors = [];
+    this.type = 'course';
   }
 }
+
 export default Course;
