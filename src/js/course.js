@@ -7,7 +7,7 @@ class Course {
     this.code = code;
     this.credit = credit;
     this.students = [];
-    this.instructors = [];
+    this.instructor = '';
     this.type = 'course';
   }
 }
