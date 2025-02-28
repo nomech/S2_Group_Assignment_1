@@ -33,29 +33,38 @@ class Ui {
   }
 
   static openForm(form, id) {
-    
-    
     if (form.dataset.id === id) {
       form.classList.add("form-modal--show");
+      if (id === "students" || id === "instructor") {
+      }
     }
   }
 
   static closeForm(form, id) {
-    
-    
     if (form.dataset.id === id) {
       form.classList.remove("form-modal--show");
     }
   }
 
-  static createInputElement(type, name, placeholder) {
-    const input = document.createElement("input");
-    input.classList.add("panel__input", "panel__input--" + name);
-    input.type = type;
-    input.name = name;
-    input.placeholder = placeholder;
-    return input;
-  }
+  
+  static renderCourses() {
+    const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
+    const courseInputs = document.querySelectorAll(".form__select");  
+    courseInputs.forEach((element) => {
+      element.innerHTML = ""
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "none";
+      defaultOption.innerText = "Select Course";
+      element.append(defaultOption);
+
+      coursesData.forEach(course => {
+        const option = document.createElement("option");
+        option.value = course.code;
+        option.innerText = course.name;
+        element.append(option);
+      });
+    });
+  }  
 }
 
 export default Ui;
