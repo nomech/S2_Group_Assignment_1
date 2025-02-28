@@ -1,14 +1,14 @@
-import Student from './student';
-import Instructor from './instructor';
-import Course from './course';
+import Student from "./student";
+import Instructor from "./instructor";
+import Course from "./course";
 
 class CourseManager {
-  static people = JSON.parse(localStorage.getItem('people')) || [];
-  static courses = JSON.parse(localStorage.getItem('courses')) || [];
+  static people = JSON.parse(localStorage.getItem("people")) || [];
+  static courses = JSON.parse(localStorage.getItem("courses")) || [];
 
   static addPerson(person) {
     let item;
-    if (person.type === 'student') {
+    if (person.type === "student") {
       item = new Student(
         person.name,
         person.email,
@@ -25,7 +25,7 @@ class CourseManager {
       });
 
       CourseManager.people.push(item);
-    } else if (person.type === 'instructor') {
+    } else if (person.type === "instructor") {
       item = new Instructor(
         person.name,
         person.email,
@@ -43,16 +43,17 @@ class CourseManager {
 
       CourseManager.people.push(item);
     } else {
-      console.error('Invalid type');
+      console.error("Invalid type");
       return;
     }
 
-    CourseManager.savePeople(CourseManager.people);
+    CourseManager.saveData("courses", CourseManager.courses);
+    CourseManager.saveData("people", CourseManager.people);
   }
 
   static addCourses(courseObject) {
     let item;
-    if (courseObject.type === 'course') {
+    if (courseObject.type === "course") {
       item = new Course(
         courseObject.name,
         courseObject.code,
@@ -61,19 +62,15 @@ class CourseManager {
 
       CourseManager.courses.push(item);
     } else {
-      console.error('Invalid type');
+      console.error("Invalid type");
       return;
     }
 
-    CourseManager.saveCourses(CourseManager.courses);
+    CourseManager.saveData("courses", CourseManager.courses);
   }
 
-  static savePeople(people) {
-    localStorage.setItem('people', JSON.stringify(people));
-  }
-
-  static saveCourses(courses) {
-    localStorage.setItem('courses', JSON.stringify(courses));
+  static saveData(item, data) {
+    localStorage.setItem(item, JSON.stringify(data));
   }
 
   static deletePerson(id) {
@@ -85,7 +82,7 @@ class CourseManager {
     if (CourseManager.people.length === beforeDelete) {
       console.error(`Person with ID ${id} not found.`);
     } else {
-      CourseManager.savePeople(CourseManager.people);
+      CourseManager.saveData("people", CourseManager.people);
     }
   }
 
@@ -96,9 +93,9 @@ class CourseManager {
 
     if (index !== -1) {
       CourseManager.people[index] = editedPerson;
-      CourseManager.savePeople(CourseManager.people);
+      CourseManager.saveData("people", CourseManager.people);
     } else {
-      console.error('Person not found');
+      console.error("Person not found");
     }
   }
 }
