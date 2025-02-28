@@ -53,7 +53,7 @@ class CourseManager {
 
   static addCourses(courseObject) {
     let item;
-    if (courseObject.type === "course") {
+
       item = new Course(
         courseObject.name,
         courseObject.code,
@@ -61,10 +61,7 @@ class CourseManager {
       );
 
       CourseManager.courses.push(item);
-    } else {
-      console.error("Invalid type");
-      return;
-    }
+
 
     CourseManager.saveData("courses", CourseManager.courses);
   }
