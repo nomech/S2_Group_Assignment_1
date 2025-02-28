@@ -15,32 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const course = {
-    name: "Course 1",
-    code: "CRS-1",
-    credit: 5,
-    type: "course",
-  };
-
-  CourseManager.addCourses(course);
-
-  const person = {
-    name: "Christoffer",
-    email: "christoffer@test.no",
-    phone: "123 45 678",
-    address: "testveien 123",
-    enrolledCourses: [
-      {
-        name: "Course 1",
-        code: "CRS-1",
-        credits: 5,
-        id:"7943f435-f16f-479a-9770-ab4a25e3dfa4"
-      }
-    ],
-    type: "student",
-  };
-
-  CourseManager.addPerson(person);
 
   const openFormOnClick = (id) => {
     const panel = document.querySelector(".panel__add");
