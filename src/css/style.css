@@ -1,3 +1,9 @@
 main {
   padding: var(--xlarge);
 }
+
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

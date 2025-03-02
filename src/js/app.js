@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const panel = document.querySelector(".panel__add");
 
     const form = document.querySelector(`.form-modal__${id}`);
-    Ui.renderCourses();
+    Ui.renderCourseOptions();
 
     // Adding event listener to panel button
     panel.addEventListener("click", (e) => {
