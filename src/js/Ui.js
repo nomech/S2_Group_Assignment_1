@@ -3,7 +3,7 @@ class Ui {
   static renderPage(id) {
     this.clearPage();
     this.createPanel(id);
-    //this.renderData(id);
+    this.renderData(id);
   }
 
   static createPanel(id) {
@@ -21,7 +21,65 @@ class Ui {
   }
 
   static renderData(id) {
-    const data = localStorage.getItem(id);
+    const data = JSON.parse(localStorage.getItem(id)) || [];
+    const dataContainer = document.querySelector(".data");
+
+    data.forEach((item) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.dataset.id = item.id;
+
+      const cardTitle = document.createElement("h3");
+      cardTitle.classList.add("data__title");
+      cardTitle.textContent = item.name;
+
+      const cardContent = document.createElement("div");
+      cardContent.classList.add("card__item");
+
+      if (id === "students") {
+        cardListItem.textContent = item.email;
+      } else if (id === "instructors") {
+        cardListItem.textContent = item.email;
+      } else if (id === "courses") {
+        const cardCode = document.createElement("p");
+        const cardInstructor = document.createElement("p");
+        const cardStudents = document.createElement("p");
+
+        cardCode.classList.add("card__code");
+        cardInstructor.classList.add("card__instructor");
+        cardStudents.classList.add("card__students");
+
+        cardCode.textContent = item.code;
+        cardInstructor.textContent = `Instructor: ${item.instructor}`;
+        
+        const studentsList = document.createElement("ul");
+
+        item.students.forEach((student) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = student.name;
+          studentsList.append(listItem);
+        });
+
+        const buttonGroup = document.createElement("div");
+        buttonGroup.classList.add("card__button-group");
+
+        const editButton = document.createElement("button");
+        editButton.classList.add("button", "card__edit");
+        editButton.textContent = "Edit";
+        editButton.dataset.id = item.id;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.classList.add("button", "card__delete");
+        deleteButton.textContent = "Delete";
+        deleteButton.dataset.id = item.id;
+
+        buttonGroup.append(editButton, deleteButton);
+
+        cardContent.append(cardCode, cardInstructor, studentsList, buttonGroup);
+      }
+      card.append(cardTitle, cardContent);
+      dataContainer.append(card);
+    });
   }
 
   static clearPage() {
@@ -46,25 +104,25 @@ class Ui {
     }
   }
 
-  
-  static renderCourses() {
+  static renderCourseOptions() {
     const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
-    const courseInputs = document.querySelectorAll(".form__select");  
+    const courseInputs = document.querySelectorAll(".form__select");
     courseInputs.forEach((element) => {
-      element.innerHTML = ""
+      element.innerHTML = "";
       const defaultOption = document.createElement("option");
       defaultOption.value = "none";
       defaultOption.innerText = "Select Course";
       element.append(defaultOption);
 
-      coursesData.forEach(course => {
+      coursesData.forEach((course) => {
         const option = document.createElement("option");
         option.value = course.code;
         option.innerText = course.name;
+        option.dataset.id = course.id;
         element.append(option);
       });
     });
-  }  
+  }
 }
 
 export default Ui;
