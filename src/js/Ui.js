@@ -37,7 +37,7 @@ class Ui {
       form.classList.add("form-modal--show");
       if (id === "students" || id === "instructor") {
       }
-    }
+    } 
   }
 
   static closeForm(form, id) {
@@ -64,7 +64,17 @@ class Ui {
         element.append(option);
       });
     });
-  }  
+  }
+  
+  static validateForm(form) {
+    const inputs = form.querySelectorAll("input, textarea, select");
+    for (let input of inputs) {
+      if (input.value.trim() === "") {
+        return false;
+      }
+    }
+    return true; 
+  }
 }
 
 export default Ui;
