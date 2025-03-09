@@ -73,6 +73,44 @@ class Ui {
           CourseManager.deletePerson(item.id);
         });
         editButton.addEventListener('click', () => {
+          const instructorForm = document.querySelector(
+            `.form-modal__instructors`
+          );
+
+          if (!instructorForm) {
+            console.error('Instructor form not found!');
+            return;
+          }
+
+          const nameInput = instructorForm.querySelector('#name');
+          const emailInput = instructorForm.querySelector('#email');
+          const phoneInput = instructorForm.querySelector('#phone');
+          const addressInput = instructorForm.querySelector('#address');
+          const courseSelect = instructorForm.querySelector('#course');
+          const formButton = instructorForm.querySelector('.form__button');
+
+          if (
+            !nameInput ||
+            !emailInput ||
+            !phoneInput ||
+            !addressInput ||
+            !phoneInput
+          ) {
+            console.error('Form inputs not found!');
+            return;
+          }
+
+          nameInput.value = item.name;
+          emailInput.value = item.email;
+          phoneInput.value = item.phone;
+          addressInput.value = item.address;
+          courseSelect.value = item.assignedCourses;
+
+          formButton.textContent = 'Edit Instructor';
+          formButton.dataset.action = 'edit';
+          formButton.dataset.instructorId = item.id; // Store the course ID for later to be used in app.js
+
+          this.openForm(instructorForm, 'courses');
           CourseManager.editPerson(item);
         });
         cardListItem.textContent = item.email;
@@ -104,15 +142,13 @@ class Ui {
             return;
           }
 
-          // ✅ Set values correctly from selected course
           nameInput.value = item.name;
           codeInput.value = item.code;
           creditInput.value = item.credit;
 
-          // ✅ Change button text to indicate edit mode
           formButton.textContent = 'Edit Course';
-          formButton.dataset.action = 'edit'; // Set a flag for edit mode
-          formButton.dataset.courseId = item.id; // Store the course ID
+          formButton.dataset.action = 'edit';
+          formButton.dataset.courseId = item.id;
 
           this.openForm(courseForm, 'courses');
           CourseManager.editCourse(item);

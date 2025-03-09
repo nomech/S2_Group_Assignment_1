@@ -32,15 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const formButton = courseForm.querySelector('.form__button');
 
     if (formButton.dataset.action === 'edit') {
-      // ✅ Editing an existing course
-      course.id = formButton.dataset.courseId; // Get stored course ID
+      course.id = formButton.dataset.courseId;
       CourseManager.editCourse(course);
     } else {
-      // ✅ Adding a new course
       CourseManager.addCourses(course);
     }
-
-    // ✅ Close form and refresh list
     Ui.closeForm(modal, courseForm.dataset.id);
     Ui.renderPage('courses');
   });
