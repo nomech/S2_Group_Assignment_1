@@ -41,20 +41,6 @@ class Ui {
     panel.append(title, addButton);
   }
 
-  static editPanel(id) {
-    const panel = document.querySelector('.panel');
-    const title = document.createElement('h2');
-    title.classList.add('panel__title');
-    title.textContent = id;
-
-    const editButton = document.createElement('button');
-    editButton.classList.add('panel__add', 'button', 'panel__button');
-    editButton.textContent = `add ${id}`;
-    editButton.dataset.id = id;
-
-    panel.append(title, addButton);
-  }
-
   static renderData(id) {
     const data = JSON.parse(localStorage.getItem(id)) || [];
     const dataContainer = document.querySelector('.data');
@@ -96,13 +82,42 @@ class Ui {
         });
         editButton.addEventListener('click', () => {
           const courseForm = document.querySelector(`.form-modal__courses`);
-          document.querySelector('.form__input--course-name').value = item.name;
-          document.querySelector('.form__input--course-code').value = item.code;
-          document.querySelector('.form__input--course-credit').value =
-            item.credit;
-          this.openForm(courseForm, id);
+
+          if (!courseForm) {
+            console.error('Course form not found!');
+            return;
+          }
+
+          const nameInput = courseForm.querySelector(
+            '.form__input--course-name'
+          );
+          const codeInput = courseForm.querySelector(
+            '.form__input--course-code'
+          );
+          const creditInput = courseForm.querySelector(
+            '.form__input--course-credit'
+          );
+          const formButton = courseForm.querySelector('.form__button');
+
+          if (!nameInput || !codeInput || !creditInput) {
+            console.error('Form inputs not found!');
+            return;
+          }
+
+          // ✅ Set values correctly from selected course
+          nameInput.value = item.name;
+          codeInput.value = item.code;
+          creditInput.value = item.credit;
+
+          // ✅ Change button text to indicate edit mode
+          formButton.textContent = 'Edit Course';
+          formButton.dataset.action = 'edit'; // Set a flag for edit mode
+          formButton.dataset.courseId = item.id; // Store the course ID
+
+          this.openForm(courseForm, 'courses');
           CourseManager.editCourse(item);
         });
+
         const cardCode = document.createElement('p');
         const cardInstructor = document.createElement('p');
         const cardStudents = document.createElement('p');

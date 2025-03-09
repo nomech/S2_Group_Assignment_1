@@ -22,12 +22,26 @@ document.addEventListener('DOMContentLoaded', () => {
   courseForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const modal = document.querySelector('.form-modal__courses');
+
     const course = {
       name: courseName.value,
       code: courseCode.value,
       credit: courseCredit.value,
     };
-    CourseManager.addCourses(course);
+
+    const formButton = courseForm.querySelector('.form__button');
+
+    if (formButton.dataset.action === 'edit') {
+      // ✅ Editing an existing course
+      course.id = formButton.dataset.courseId; // Get stored course ID
+      CourseManager.editCourse(course);
+    } else {
+      // ✅ Adding a new course
+      CourseManager.addCourses(course);
+    }
+
+    // ✅ Close form and refresh list
     Ui.closeForm(modal, courseForm.dataset.id);
+    Ui.renderPage('courses');
   });
 });

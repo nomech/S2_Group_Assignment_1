@@ -1,6 +1,7 @@
 import Student from './student';
 import Instructor from './instructor';
 import Course from './course';
+import Ui from './Ui.js';
 
 class CourseManager {
   static people = JSON.parse(localStorage.getItem('people')) || [];
@@ -79,6 +80,8 @@ class CourseManager {
       console.error(`Person with ID ${id} not found.`);
     } else {
       CourseManager.saveData('people', CourseManager.people);
+
+      Ui.renderPage('people');
     }
   }
 
@@ -92,6 +95,8 @@ class CourseManager {
       console.error(`course with ID ${id} not found.`);
     } else {
       CourseManager.saveData('courses', CourseManager.courses);
+
+      Ui.renderPage('courses');
     }
   }
 
@@ -111,6 +116,7 @@ class CourseManager {
         editedPerson.assignedCourses;
 
       CourseManager.saveData('people', CourseManager.people);
+      Ui.renderPage('people');
     } else {
       console.error('Person not found');
     }
@@ -118,7 +124,7 @@ class CourseManager {
 
   static editCourse(editedCourse) {
     const index = CourseManager.courses.findIndex(
-      (course) => course.id === editedCourse.id
+      (course) => String(course.id) === String(editedCourse.id)
     );
 
     if (index !== -1) {
@@ -127,6 +133,8 @@ class CourseManager {
       CourseManager.courses[index].credit = editedCourse.credit;
 
       CourseManager.saveData('courses', CourseManager.courses);
+
+      Ui.renderPage('courses');
     } else {
       console.error('Course not found');
     }
