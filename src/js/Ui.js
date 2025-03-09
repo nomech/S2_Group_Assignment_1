@@ -95,7 +95,7 @@ class Ui {
       form.classList.add("form-modal--show");
       if (id === "students" || id === "instructor") {
       }
-    }
+    } 
   }
 
   static closeForm(form, id) {
@@ -122,7 +122,7 @@ class Ui {
         element.append(option);
       });
     });
-  }
+  }  
 }
 
 export default Ui;

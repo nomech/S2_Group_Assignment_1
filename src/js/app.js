@@ -39,15 +39,48 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  courseForm.addEventListener("submit", (e) => {
+//   courseForm.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     const modal = document.querySelector(".form-modal__courses");
+//     const course = {
+//       name: courseName.value,
+//       code: courseCode.value,
+//       credit: courseCredit.value,
+//     };
+//     CourseManager.addCourses(course);
+//     Ui.closeForm(modal, courseForm.dataset.id);
+//   });
+    
+    
+    function validateCourseForm() {
+   
+    if (!courseName.value || !courseCode.value || !courseCredit.value) {
+      return false;
+    }
+    // courseName.value && courseErrorName.style.visibility = "visible" 
+    return true;
+    }
+
+    courseForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const modal = document.querySelector(".form-modal__courses");
-    const course = {
-      name: courseName.value,
-      code: courseCode.value,
-      credit: courseCredit.value,
-    };
-    CourseManager.addCourses(course);
-    Ui.closeForm(modal, courseForm.dataset.id);
+  
+    if (validateCourseForm()) {
+  
+      const course = {
+        name: courseName.value,
+        code: courseCode.value,
+        credit: courseCredit.value,
+      };
+  
+      CourseManager.addCourses(course);
+  
+      Ui.closeForm(modal, courseForm.dataset.id);
+
+      courseForm.reset();
+    }
   });
+
+  
+  
 });
