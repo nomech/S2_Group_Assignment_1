@@ -118,7 +118,7 @@ class CourseManager {
 
   static editCourse(editedCourse) {
     const index = CourseManager.courses.findIndex(
-      (course) => String(course.id) === String(editedCourse.id)
+      (course) => course.id === editedCourse.id
     );
 
     if (index !== -1) {

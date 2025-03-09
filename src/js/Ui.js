@@ -41,6 +41,20 @@ class Ui {
     panel.append(title, addButton);
   }
 
+  static editPanel(id) {
+    const panel = document.querySelector('.panel');
+    const title = document.createElement('h2');
+    title.classList.add('panel__title');
+    title.textContent = id;
+
+    const editButton = document.createElement('button');
+    editButton.classList.add('panel__add', 'button', 'panel__button');
+    editButton.textContent = `add ${id}`;
+    editButton.dataset.id = id;
+
+    panel.append(title, addButton);
+  }
+
   static renderData(id) {
     const data = JSON.parse(localStorage.getItem(id)) || [];
     const dataContainer = document.querySelector('.data');
