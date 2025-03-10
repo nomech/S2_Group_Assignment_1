@@ -1,15 +1,16 @@
-import Student from './student';
-import Instructor from './instructor';
-import Course from './course';
-import Ui from './Ui.js';
+import Student from "./student";
+import Instructor from "./instructor";
+import Course from "./course";
+import Ui from "./Ui.js";
 
 class CourseManager {
-  static people = JSON.parse(localStorage.getItem('people')) || [];
-  static courses = JSON.parse(localStorage.getItem('courses')) || [];
+  static people = JSON.parse(localStorage.getItem("people")) || [];
+  static courses = JSON.parse(localStorage.getItem("courses")) || [];
 
   static addPerson(person) {
-    let item;
-    if (person.type === 'student') {
+      let item;
+
+    if (person.type === "student") {
       item = new Student(
         person.name,
         person.email,
@@ -20,13 +21,15 @@ class CourseManager {
 
       person.enrolledCourses.forEach((course) => {
         const courseToUpdate = CourseManager.courses.findIndex((item) => {
-          return item.id === course.id;
+          return item.code === course;
         });
+
+        console.log(courseToUpdate);
         CourseManager.courses[courseToUpdate].students.push(person);
       });
 
       CourseManager.people.push(item);
-    } else if (person.type === 'instructor') {
+    } else if (person.type === "instructor") {
       item = new Instructor(
         person.name,
         person.email,
@@ -37,19 +40,19 @@ class CourseManager {
 
       person.assignedCourses.forEach((course) => {
         const courseToUpdate = CourseManager.courses.findIndex((item) => {
-          return item.id === course.id;
+          return item.code === course;
         });
         CourseManager.courses[courseToUpdate].instructor = person.name;
       });
 
       CourseManager.people.push(item);
     } else {
-      console.error('Invalid type');
+      console.error("Invalid type");
       return;
     }
 
-    CourseManager.saveData('courses', CourseManager.courses);
-    CourseManager.saveData('people', CourseManager.people);
+    CourseManager.saveData("courses", CourseManager.courses);
+    CourseManager.saveData("people", CourseManager.people);
   }
 
   static addCourses(courseObject) {
@@ -63,7 +66,7 @@ class CourseManager {
 
     CourseManager.courses.push(item);
 
-    CourseManager.saveData('courses', CourseManager.courses);
+    CourseManager.saveData("courses", CourseManager.courses);
   }
 
   static saveData(item, data) {
@@ -79,9 +82,9 @@ class CourseManager {
     if (CourseManager.people.length === beforeDelete) {
       console.error(`Person with ID ${id} not found.`);
     } else {
-      CourseManager.saveData('people', CourseManager.people);
+      CourseManager.saveData("people", CourseManager.people);
 
-      Ui.renderPage('people');
+      Ui.renderPage("people");
     }
   }
 
@@ -94,9 +97,9 @@ class CourseManager {
     if (CourseManager.courses.length === beforeDelete) {
       console.error(`course with ID ${id} not found.`);
     } else {
-      CourseManager.saveData('courses', CourseManager.courses);
+      CourseManager.saveData("courses", CourseManager.courses);
 
-      Ui.renderPage('courses');
+      Ui.renderPage("courses");
     }
   }
 
@@ -115,15 +118,15 @@ class CourseManager {
       CourseManager.people[index].assignedCourses =
         editedPerson.assignedCourses;
 
-      CourseManager.saveData('people', CourseManager.people);
-      Ui.renderPage('people');
+      CourseManager.saveData("people", CourseManager.people);
+      Ui.renderPage("people");
     } else {
-      console.error('Person not found');
+      console.error("Person not found");
     }
   }
 
   static editCourse(editedCourse) {
-    console.log("test")
+    console.log("test");
     const index = CourseManager.courses.findIndex(
       (course) => String(course.id) === String(editedCourse.id)
     );
@@ -133,11 +136,11 @@ class CourseManager {
       CourseManager.courses[index].code = editedCourse.code;
       CourseManager.courses[index].credit = editedCourse.credit;
 
-      CourseManager.saveData('courses', CourseManager.courses);
+      CourseManager.saveData("courses", CourseManager.courses);
 
-      Ui.renderPage('courses');
+      Ui.renderPage("courses");
     } else {
-      console.error('Course not found');
+      console.error("Course not found");
     }
   }
 }

@@ -1,5 +1,6 @@
 import Ui from "./Ui.js";
 import CourseManager from "./courseManager";
+import Person from "./person.js";
 
 // Selecting buttons
 const navButtons = document.querySelectorAll(".nav-button");
@@ -7,6 +8,24 @@ const courseForm = document.querySelector(".form--courses");
 const courseName = document.querySelector(".form__input--course-name");
 const courseCode = document.querySelector(".form__input--course-code");
 const courseCredit = document.querySelector(".form__input--course-credit");
+
+const studentForm = document.querySelector(".form--students");
+const studentName = document.querySelector(".form__input--student-name");
+const studentEmail = document.querySelector(".form__input--student-email");
+const studentPhone = document.querySelector(".form__input--student-phone");
+const studentAddress = document.querySelector(".form__input--student-address");
+const studentEnrolledCourses = document.querySelectorAll(
+  ".form__select--student"
+);
+
+const instructorForm = document.querySelector(".form--instructors");
+const instructorName = document.querySelector(".form__input--instructor-name");
+const instructorEmail = document.querySelector(".form__input--instructor-email");
+const instructorPhone = document.querySelector(".form__input--instructor-phone");
+const instructorAddress = document.querySelector(".form__input--instructor-address");
+const instructorAssignedCourses = document.querySelectorAll(
+  ".form__select--instructor"
+);
 
 // DOMContentLoaded to initialize panel
 document.addEventListener("DOMContentLoaded", () => {
@@ -28,9 +47,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   courseForm.addEventListener("submit", (e) => {
+    console.log("test");
     e.preventDefault();
     const modal = document.querySelector(".form-modal__courses");
-    
+
     if (validateCourseForm()) {
       const course = {
         name: courseName.value,
@@ -47,6 +67,87 @@ document.addEventListener("DOMContentLoaded", () => {
         CourseManager.addCourses(course);
       }
       Ui.closeForm(modal, courseForm.dataset.id);
+      Ui.clearPage();
+      Ui.renderData("courses");
+    }
+  });
+
+  function validateStudentForm() {
+    if (
+      !studentName.value ||
+      !studentEmail.value ||
+      !studentPhone.value ||
+      !studentAddress.value /*  ||
+      !studentEnrolledCourses.value */
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  studentForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const modal = document.querySelector(".form-modal__students");
+
+    const enrolledCourses = Array.from(studentEnrolledCourses).map((course) => {
+      return course.value;
+    });
+
+    if (validateStudentForm()) {
+      const student = {
+        name: studentName.value,
+        email: studentEmail.value,
+        phone: studentPhone.value,
+        address: studentAddress.value,
+        enrolledCourses: enrolledCourses,
+        type: "student",
+      };
+
+      CourseManager.addPerson(student);
+      Ui.closeForm(modal, studentForm.dataset.id);
+      studentForm.reset();
+    }
+  });
+
+  function validateInstructorForm() {
+    console.log(
+      !instructorName.value
+    );
+    if (
+      !instructorName.value ||
+      !instructorEmail.value ||
+      !instructorPhone.value ||
+      !instructorAddress.value /*  ||
+      !instructorAssignedCourses.value */
+    ) {
+      return false;
+    }
+    return true;
+  }
+  instructorForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const modal = document.querySelector(".form-modal__instructors");
+
+    const assignedCourses = Array.from(instructorAssignedCourses).map(
+      (course) => {
+        return course.value;
+      }
+    );
+
+    if (validateInstructorForm()) {
+      const instructor = {
+        name: instructorName.value,
+        email: instructorEmail.value,
+        phone: instructorPhone.value,
+        address: instructorAddress.value,
+        assignedCourses: assignedCourses,
+        type: "instructor",
+      };
+
+      CourseManager.addPerson(instructor);
+      Ui.closeForm(modal, instructorForm.dataset.id);
+      instructorForm.reset();
     }
   });
 });
