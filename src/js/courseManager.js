@@ -16,6 +16,9 @@ class CourseManager {
         person.address,
         person.enrolledCourses
       );
+      
+      console.log(person);
+      
 
       person.enrolledCourses.forEach((course) => {
         const courseToUpdate = CourseManager.courses.findIndex((item) => {
