@@ -123,6 +123,7 @@ class CourseManager {
   }
 
   static editCourse(editedCourse) {
+    console.log("test")
     const index = CourseManager.courses.findIndex(
       (course) => String(course.id) === String(editedCourse.id)
     );
