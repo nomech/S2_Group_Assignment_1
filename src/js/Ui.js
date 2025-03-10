@@ -65,6 +65,42 @@ class Ui {
           CourseManager.deletePerson(item.id);
         });
         editButton.addEventListener('click', () => {
+          const studentForm = document.querySelector(`.form-modal__students`);
+
+          if (!studentForm) {
+            console.error('Student form not found!');
+            return;
+          }
+
+          const nameInput = studentForm.querySelector('#name');
+          const emailInput = studentForm.querySelector('#email');
+          const phoneInput = studentForm.querySelector('#phone');
+          const addressInput = studentForm.querySelector('#address');
+          const courseSelect = studentForm.querySelector('#course');
+          const formButton = studentForm.querySelector('.form__button');
+
+          if (
+            !nameInput ||
+            !emailInput ||
+            !phoneInput ||
+            !addressInput ||
+            !phoneInput
+          ) {
+            console.error('Form inputs not found!');
+            return;
+          }
+
+          nameInput.value = item.name;
+          emailInput.value = item.email;
+          phoneInput.value = item.phone;
+          addressInput.value = item.address;
+          courseSelect.value = item.enrolledCourses;
+
+          formButton.textContent = 'Edit Student';
+          formButton.dataset.action = 'edit';
+          formButton.dataset.studentId = item.id; // Store the course ID for later to be used in app.js
+
+          this.openForm(studentForm, 'students');
           CourseManager.editPerson(item);
         });
         cardListItem.textContent = item.email;
@@ -110,7 +146,7 @@ class Ui {
           formButton.dataset.action = 'edit';
           formButton.dataset.instructorId = item.id; // Store the course ID for later to be used in app.js
 
-          this.openForm(instructorForm, 'courses');
+          this.openForm(instructorForm, 'instructors');
           CourseManager.editPerson(item);
         });
         cardListItem.textContent = item.email;
@@ -206,7 +242,7 @@ class Ui {
       form.classList.add('form-modal--show');
       if (id === 'students' || id === 'instructor') {
       }
-    } 
+    }
   }
 
   static closeForm(form, id) {
@@ -233,7 +269,7 @@ class Ui {
         element.append(option);
       });
     });
-  }  
+  }
 }
 
 export default Ui;
