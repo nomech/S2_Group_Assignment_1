@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
   courseForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const modal = document.querySelector('.form-modal__courses');
@@ -39,5 +40,68 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     Ui.closeForm(modal, courseForm.dataset.id);
     Ui.renderPage('courses');
-  });
+
+  const openFormOnClick = (id) => {
+    const panel = document.querySelector(".panel__add");
+
+    const form = document.querySelector(`.form-modal__${id}`);
+    Ui.renderCourseOptions();
+
+    // Adding event listener to panel button
+    panel.addEventListener("click", (e) => {
+      const panel = document.querySelector(".panel__add");
+      Ui.openForm(form, id);
+    });
+
+    const close = document.querySelectorAll(".form-modal__close");
+    close.forEach((button) => {
+      button.addEventListener("click", (e) => {
+        Ui.closeForm(form, id);
+      });
+    });
+  };
+
+//   courseForm.addEventListener("submit", (e) => {
+//     e.preventDefault();
+//     const modal = document.querySelector(".form-modal__courses");
+//     const course = {
+//       name: courseName.value,
+//       code: courseCode.value,
+//       credit: courseCredit.value,
+//     };
+//     CourseManager.addCourses(course);
+//     Ui.closeForm(modal, courseForm.dataset.id);
+//   });
+    
+    
+    function validateCourseForm() {
+   
+    if (!courseName.value || !courseCode.value || !courseCredit.value) {
+      return false;
+    }
+    // courseName.value && courseErrorName.style.visibility = "visible" 
+    return true;
+    }
+
+    courseForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const modal = document.querySelector(".form-modal__courses");
+  
+    if (validateCourseForm()) {
+  
+      const course = {
+        name: courseName.value,
+        code: courseCode.value,
+        credit: courseCredit.value,
+      };
+  
+      CourseManager.addCourses(course);
+  
+      Ui.closeForm(modal, courseForm.dataset.id);
+
+      courseForm.reset();
+    }
+
+  });  
+  
 });
