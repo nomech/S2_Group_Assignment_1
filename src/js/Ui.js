@@ -1,4 +1,4 @@
-import CourseManager from './courseManager';
+import CourseManager from "./courseManager";
 class Ui {
   //Add this to all nav buttonsj and pass the dataset id to the render page
   static renderPage(id) {
@@ -8,33 +8,33 @@ class Ui {
   }
 
   static openFormOnClick = (id) => {
-    const panel = document.querySelector('.panel__add');
+    const panel = document.querySelector(".panel__add");
 
     const form = document.querySelector(`.form-modal__${id}`);
     Ui.renderCourseOptions();
 
     // Adding event listener to panel button
-    panel.addEventListener('click', (e) => {
-      const panel = document.querySelector('.panel__add');
+    panel.addEventListener("click", (e) => {
+      const panel = document.querySelector(".panel__add");
       Ui.openForm(form, id);
     });
 
-    const close = document.querySelectorAll('.form-modal__close');
+    const close = document.querySelectorAll(".form-modal__close");
     close.forEach((button) => {
-      button.addEventListener('click', (e) => {
+      button.addEventListener("click", (e) => {
         Ui.closeForm(form, id);
       });
     });
   };
 
   static createPanel(id) {
-    const panel = document.querySelector('.panel');
-    const title = document.createElement('h2');
-    title.classList.add('panel__title');
+    const panel = document.querySelector(".panel");
+    const title = document.createElement("h2");
+    title.classList.add("panel__title");
     title.textContent = id;
 
-    const addButton = document.createElement('button');
-    addButton.classList.add('panel__add', 'button', 'panel__button');
+    const addButton = document.createElement("button");
+    addButton.classList.add("panel__add", "button", "panel__button");
     addButton.textContent = `add ${id}`;
     addButton.dataset.id = id;
 
@@ -42,52 +42,90 @@ class Ui {
   }
 
   static renderData(id) {
-    const data = JSON.parse(localStorage.getItem(id)) || [];
-    const dataContainer = document.querySelector('.data');
+    console.log(id);
+    const localStorageAccessPoint =
+      id === "students" || id === "instructors" ? "people" : "courses";
+    console.log(localStorageAccessPoint);
+    const data =
+      JSON.parse(localStorage.getItem(localStorageAccessPoint)) || [];
+    const dataContainer = document.querySelector(".data");
 
     data.forEach((item) => {
-      const card = document.createElement('div');
-      card.classList.add('card');
+      const card = document.createElement("div");
+      card.classList.add("card");
       card.dataset.id = item.id;
 
-      const cardTitle = document.createElement('h3');
-      cardTitle.classList.add('data__title');
-      cardTitle.textContent = item.name;
+      
 
-      const cardContent = document.createElement('div');
-      cardContent.classList.add('card__item');
 
-      const deleteButton = document.createElement('button');
-      const editButton = document.createElement('button');
+      const deleteButton = document.createElement("button");
+      const editButton = document.createElement("button");
+      const cardTitle = document.createElement("h3");
+      const cardContent = document.createElement("div");
+      cardTitle.classList.add("data__title");
+      cardContent.classList.add("card__item");
 
-      if (id === 'students') {
-        deleteButton.addEventListener('click', () => {
+      if (id === "students") {
+        cardTitle.textContent = item.name;
+        const email = document.createElement("p");
+        email.textContent = item.email;
+        cardContent.append(email)
+
+        const phone = document.createElement("p");
+        phone.textContent = item.phone;
+        cardContent.append(phone)
+
+        const address = document.createElement("p");
+        address.textContent = item.address;
+        cardContent.append(address)
+
+        const enrolledCourses = document.createElement("p");
+        enrolledCourses.textContent = `Enrolled Courses: ${item.enrolledCourses}`;
+        cardContent.append(enrolledCourses)
+
+        deleteButton.classList.add("button", "card__delete");
+        deleteButton.textContent = "Delete";
+        deleteButton.dataset.id = item.id;
+        
+        editButton.classList.add("button", "card__edit");
+        editButton.textContent = "Edit";
+        editButton.dataset.id = item.id;
+
+        const buttonGroup = document.createElement("div");
+        buttonGroup.classList.add("card__button-group");
+        buttonGroup.append(editButton, deleteButton);
+
+        cardContent.append(buttonGroup);
+
+        deleteButton.addEventListener("click", () => {
           CourseManager.deletePerson(item.id);
         });
-        editButton.addEventListener('click', () => {
+
+        editButton.addEventListener("click", () => {
+          console.log("test")
           CourseManager.editPerson(item);
         });
-        cardListItem.textContent = item.email;
-      } else if (id === 'instructors') {
-        deleteButton.addEventListener('click', () => {
+
+      } else if (id === "instructors") {
+        deleteButton.addEventListener("click", () => {
           CourseManager.deletePerson(item.id);
         });
-        editButton.addEventListener('click', () => {
+        editButton.addEventListener("click", () => {
           const instructorForm = document.querySelector(
             `.form-modal__instructors`
           );
 
           if (!instructorForm) {
-            console.error('Instructor form not found!');
+            console.error("Instructor form not found!");
             return;
           }
 
-          const nameInput = instructorForm.querySelector('#name');
-          const emailInput = instructorForm.querySelector('#email');
-          const phoneInput = instructorForm.querySelector('#phone');
-          const addressInput = instructorForm.querySelector('#address');
-          const courseSelect = instructorForm.querySelector('#course');
-          const formButton = instructorForm.querySelector('.form__button');
+          const nameInput = instructorForm.querySelector("#name");
+          const emailInput = instructorForm.querySelector("#email");
+          const phoneInput = instructorForm.querySelector("#phone");
+          const addressInput = instructorForm.querySelector("#address");
+          const courseSelect = instructorForm.querySelector("#course");
+          const formButton = instructorForm.querySelector(".form__button");
 
           if (
             !nameInput ||
@@ -96,7 +134,7 @@ class Ui {
             !addressInput ||
             !phoneInput
           ) {
-            console.error('Form inputs not found!');
+            console.error("Form inputs not found!");
             return;
           }
 
@@ -106,39 +144,39 @@ class Ui {
           addressInput.value = item.address;
           courseSelect.value = item.assignedCourses;
 
-          formButton.textContent = 'Edit Instructor';
-          formButton.dataset.action = 'edit';
+          formButton.textContent = "Edit Instructor";
+          formButton.dataset.action = "edit";
           formButton.dataset.instructorId = item.id; // Store the course ID for later to be used in app.js
 
-          this.openForm(instructorForm, 'courses');
+          this.openForm(instructorForm, "courses");
           CourseManager.editPerson(item);
         });
-        cardListItem.textContent = item.email;
-      } else if (id === 'courses') {
-        deleteButton.addEventListener('click', () => {
+        //cardListItem.textContent = item.email;
+      } else if (id === "courses") {
+        deleteButton.addEventListener("click", () => {
           CourseManager.deleteCourses(item.id);
         });
-        editButton.addEventListener('click', () => {
+        editButton.addEventListener("click", () => {
           const courseForm = document.querySelector(`.form-modal__courses`);
 
           if (!courseForm) {
-            console.error('Course form not found!');
+            console.error("Course form not found!");
             return;
           }
 
           const nameInput = courseForm.querySelector(
-            '.form__input--course-name'
+            ".form__input--course-name"
           );
           const codeInput = courseForm.querySelector(
-            '.form__input--course-code'
+            ".form__input--course-code"
           );
           const creditInput = courseForm.querySelector(
-            '.form__input--course-credit'
+            ".form__input--course-credit"
           );
-          const formButton = courseForm.querySelector('.form__button');
+          const formButton = courseForm.querySelector(".form__button");
 
           if (!nameInput || !codeInput || !creditInput) {
-            console.error('Form inputs not found!');
+            console.error("Form inputs not found!");
             return;
           }
 
@@ -146,42 +184,42 @@ class Ui {
           codeInput.value = item.code;
           creditInput.value = item.credit;
 
-          formButton.textContent = 'Edit Course';
-          formButton.dataset.action = 'edit';
+          formButton.textContent = "Edit Course";
+          formButton.dataset.action = "edit";
           formButton.dataset.courseId = item.id;
 
-          this.openForm(courseForm, 'courses');
+          this.openForm(courseForm, "courses");
           CourseManager.editCourse(item);
         });
 
-        const cardCode = document.createElement('p');
-        const cardInstructor = document.createElement('p');
-        const cardStudents = document.createElement('p');
+        const cardCode = document.createElement("p");
+        const cardInstructor = document.createElement("p");
+        const cardStudents = document.createElement("p");
 
-        cardCode.classList.add('card__code');
-        cardInstructor.classList.add('card__instructor');
-        cardStudents.classList.add('card__students');
+        cardCode.classList.add("card__code");
+        cardInstructor.classList.add("card__instructor");
+        cardStudents.classList.add("card__students");
 
         cardCode.textContent = item.code;
         cardInstructor.textContent = `Instructor: ${item.instructor}`;
 
-        const studentsList = document.createElement('ul');
+        const studentsList = document.createElement("ul");
 
         item.students.forEach((student) => {
-          const listItem = document.createElement('li');
+          const listItem = document.createElement("li");
           listItem.textContent = student.name;
           studentsList.append(listItem);
         });
 
-        const buttonGroup = document.createElement('div');
-        buttonGroup.classList.add('card__button-group');
+        const buttonGroup = document.createElement("div");
+        buttonGroup.classList.add("card__button-group");
 
-        editButton.classList.add('button', 'card__edit');
-        editButton.textContent = 'Edit';
+        editButton.classList.add("button", "card__edit");
+        editButton.textContent = "Edit";
         editButton.dataset.id = item.id;
 
-        deleteButton.classList.add('button', 'card__delete');
-        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add("button", "card__delete");
+        deleteButton.textContent = "Delete";
         deleteButton.dataset.id = item.id;
 
         buttonGroup.append(editButton, deleteButton);
@@ -194,46 +232,46 @@ class Ui {
   }
 
   static clearPage() {
-    const panel = document.querySelector('.panel');
-    panel.innerHTML = '';
+    const panel = document.querySelector(".panel");
+    panel.innerHTML = "";
 
-    const data = document.querySelector('.data');
-    data.innerHTML = '';
+    const data = document.querySelector(".data");
+    data.innerHTML = "";
   }
 
   static openForm(form, id) {
     if (form.dataset.id === id) {
-      form.classList.add('form-modal--show');
-      if (id === 'students' || id === 'instructor') {
+      form.classList.add("form-modal--show");
+      if (id === "students" || id === "instructor") {
       }
-    } 
+    }
   }
 
   static closeForm(form, id) {
     if (form.dataset.id === id) {
-      form.classList.remove('form-modal--show');
+      form.classList.remove("form-modal--show");
     }
   }
 
   static renderCourseOptions() {
-    const coursesData = JSON.parse(localStorage.getItem('courses')) || [];
-    const courseInputs = document.querySelectorAll('.form__select');
+    const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
+    const courseInputs = document.querySelectorAll(".form__select");
     courseInputs.forEach((element) => {
-      element.innerHTML = '';
-      const defaultOption = document.createElement('option');
-      defaultOption.value = 'none';
-      defaultOption.innerText = 'Select Course';
+      element.innerHTML = "";
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "none";
+      defaultOption.innerText = "Select Course";
       element.append(defaultOption);
 
       coursesData.forEach((course) => {
-        const option = document.createElement('option');
+        const option = document.createElement("option");
         option.value = course.code;
         option.innerText = course.name;
         option.dataset.id = course.id;
         element.append(option);
       });
     });
-  }  
+  }
 }
 
 export default Ui;

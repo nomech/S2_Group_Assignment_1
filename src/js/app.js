@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   courseForm.addEventListener("submit", (e) => {
-    console.log("test");
     e.preventDefault();
     const modal = document.querySelector(".form-modal__courses");
 

@@ -8,7 +8,7 @@ class CourseManager {
   static courses = JSON.parse(localStorage.getItem("courses")) || [];
 
   static addPerson(person) {
-      let item;
+    let item;
 
     if (person.type === "student") {
       item = new Student(
@@ -119,7 +119,12 @@ class CourseManager {
         editedPerson.assignedCourses;
 
       CourseManager.saveData("people", CourseManager.people);
-      Ui.renderPage("people");
+
+      if (editedPerson.type === "student") {
+        Ui.renderPage("students");
+      } else if (editedPerson.type === "instructor") {
+        Ui.renderPage("instructors");
+      }
     } else {
       console.error("Person not found");
     }
