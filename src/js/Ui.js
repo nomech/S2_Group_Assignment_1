@@ -452,13 +452,20 @@ class Ui {
     // Get the courses data from local storage or an empty array.
     const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
 
+/*     for(let i = 0; i < coursesData.length; i++) {
+      if(coursesData[i].instructor){
+        return;
+      }
+    }
+       */
+
     // Get the selected values from the select dropdowns.
-    const selectedValues = Array.from(
-      document.querySelectorAll(".form__select")
-    )
+    const selectedValues = Array.from(document.querySelectorAll(".form__select"))
       .map((select) => select.value)
       .filter((value) => value !== "");
 
+      
+      
     // Select the course inputs.
     const courseInputs = document.querySelectorAll(".form__select");
 
@@ -480,10 +487,7 @@ class Ui {
 
       // Append the course options to the select dropdown.
       coursesData.forEach((course) => {
-        if (
-          selectedValues.includes(course.code) &&
-          course.code !== currentValue
-        ) {
+        if (selectedValues.includes(course.code) && course.code !== currentValue) {
           return;
         }
 

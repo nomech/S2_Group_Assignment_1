@@ -431,41 +431,30 @@ class CourseManager {
       // Get the original course data
       const originalCourse = CourseManager.courses[index];
 
-      // Update course data with new values
-      CourseManager.courses[index].name = editedCourse.name;
-      CourseManager.courses[index].code = editedCourse.code;
-      CourseManager.courses[index].credit = editedCourse.credit;
-
-      // If course code has changed, update all references in students and instructors
-      if (originalCourse.code !== editedCourse.code) {
         // Update course code in all enrolled students
         CourseManager.students.forEach((student) => {
-          if (
-            student.enrolledCourses &&
-            student.enrolledCourses.includes(originalCourse.code)
-          ) {
+          // Check if student is enrolled in this course
+          if (student.enrolledCourses.includes(originalCourse.code)) {
             // Replace old code with new code
-            const codeIndex = student.enrolledCourses.indexOf(
-              originalCourse.code
-            );
+            const codeIndex = student.enrolledCourses.indexOf(originalCourse.code);
             student.enrolledCourses[codeIndex] = editedCourse.code;
           }
         });
 
         // Update course code in all instructors
         CourseManager.instructors.forEach((instructor) => {
-          if (
-            instructor.assignedCourses &&
-            instructor.assignedCourses.includes(originalCourse.code)
-          ) {
+          if (instructor.assignedCourses.includes(originalCourse.code)) {
             // Replace old code with new code
-            const codeIndex = instructor.assignedCourses.indexOf(
-              originalCourse.code
-            );
+            const codeIndex = instructor.assignedCourses.indexOf(originalCourse.code);
             instructor.assignedCourses[codeIndex] = editedCourse.code;
           }
-        });
-      }
+        });     
+
+              
+      // Update course data with new values
+      CourseManager.courses[index].name = editedCourse.name;
+      CourseManager.courses[index].code = editedCourse.code;
+      CourseManager.courses[index].credit = editedCourse.credit;
 
       // Keep existing students and instructor data
       CourseManager.courses[index].students = originalCourse.students || [];
