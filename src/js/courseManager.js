@@ -16,20 +16,23 @@ class CourseManager {
       student.phone,
       student.address,
       student.enrolledCourses
-    );  
+    );
 
+    // Add student to all enrolled courses
     student.enrolledCourses.forEach((courseCode) => {
+      // Find the course in the courses array
       const courseIndex = CourseManager.courses.findIndex((course) => {
         return course.code === courseCode;
       });
 
+      // If the course is found, add the student to the course's students array
       if (courseIndex !== -1) {
         CourseManager.courses[courseIndex].students.push(item);
       }
     });
 
     // Add student to array
-    CourseManager.students.push(item);    
+    CourseManager.students.push(item);
 
     // Save both students and updated courses
     CourseManager.saveData("courses", CourseManager.courses);
@@ -49,11 +52,13 @@ class CourseManager {
       instructor.assignedCourses
     );
 
+    // Add instructor to all assigned courses
     instructor.assignedCourses.forEach((courseCode) => {
       const courseIndex = CourseManager.courses.findIndex((course) => {
         return course.code === courseCode;
       });
 
+      // If the course is found, add the instructor to the course's instructor property
       if (courseIndex !== -1) {
         CourseManager.courses[courseIndex].instructor = {
           id: item.id,
@@ -96,24 +101,27 @@ class CourseManager {
     Ui.renderPage("courses");
   }
 
+  // Save data to local storage
   static saveData(item, data) {
     localStorage.setItem(item, JSON.stringify(data));
   }
 
+  // Delete student
   static deleteStudent(id, type) {
     // Find student data before removing
     const studentToDelete = CourseManager.students.find(
       (student) => student.id === id
     );
 
+    // If student is found, remove them
     if (studentToDelete) {
       // Remove student from all enrolled courses
-
       studentToDelete.enrolledCourses.forEach((courseCode) => {
         const courseIndex = CourseManager.courses.findIndex(
           (course) => course.code === courseCode
         );
 
+        // If the course is found, remove the student from the course's students array
         if (courseIndex !== -1) {
           // Filter out the student from the course's students array
           CourseManager.courses[courseIndex].students = CourseManager.courses[
@@ -230,16 +238,14 @@ class CourseManager {
     }
   }
 
+  // Edit student
   static editStudent(editStudent) {
-   const index = CourseManager.students.findIndex(
+    // Find student to edit
+    const index = CourseManager.students.findIndex(
       (student) => student.id === editStudent.id
     );
 
-    console.log(index);
-    console.log(editStudent);
-    
-    
-
+    // If student is found, update their data
     if (index !== -1) {
       // Get the original student data first
       const originalStudent = CourseManager.students[index];
@@ -248,10 +254,13 @@ class CourseManager {
       const studentEnrolledCourses = document.querySelectorAll(
         ".form__select--student"
       );
+
+      // Filter out empty values
       const newEnrolledCourses = Array.from(studentEnrolledCourses)
         .filter((course) => course.value !== "")
         .map((course) => course.value);
 
+      // Find courses to remove student from
       const oldEnrolledCourses = originalStudent.enrolledCourses || [];
 
       // Find courses to remove student from
@@ -261,6 +270,8 @@ class CourseManager {
           const courseIndex = CourseManager.courses.findIndex(
             (course) => course.code === courseCode
           );
+
+          // If the course is found, remove the student from the course's students array
           if (courseIndex !== -1) {
             CourseManager.courses[courseIndex].students = CourseManager.courses[
               courseIndex
@@ -270,17 +281,22 @@ class CourseManager {
       });
 
       // Find courses to add student to
-
       newEnrolledCourses.forEach((courseCode) => {
         if (!oldEnrolledCourses.includes(courseCode)) {
+
           // This is a new enrollment - add student
           const courseIndex = CourseManager.courses.findIndex(
-            (c) => c.code === courseCode
+            (course) => course.code === courseCode
           );
+
+          // If the course is found, add the student to the course's students array
           if (courseIndex !== -1) {
+            // Check if students array exists
             if (!CourseManager.courses[courseIndex].students) {
               CourseManager.courses[courseIndex].students = [];
             }
+
+            // Add student to course
             CourseManager.courses[courseIndex].students.push({
               id: editStudent.id,
               name: editStudent.name,
@@ -308,7 +324,6 @@ class CourseManager {
       CourseManager.students[index].address = editStudent.address;
       CourseManager.students[index].enrolledCourses = newEnrolledCourses;
 
-  
       // Save all data
       CourseManager.saveData("students", CourseManager.students);
       CourseManager.saveData("courses", CourseManager.courses);
@@ -324,32 +339,35 @@ class CourseManager {
     }
   }
 
-  static editInstructor(instructor) {
+  // Edit instructor
+  static editInstructor(editInstructor) {
+    // Find instructor to edit
     const index = CourseManager.instructors.findIndex(
-      (i) => i.id === instructor.id
+      (instructor) => instructor.id === editInstructor.id
     );
 
+    // If instructor is found, update their data
     if (index !== -1) {
       // Get the original instructor data first
       const originalInstructor = CourseManager.instructors[index];
 
       // Get assigned courses from form
-      const newAssignedCourses = instructor.assignedCourses || [];
+      const newAssignedCourses = editInstructor.assignedCourses || [];
       const oldAssignedCourses = originalInstructor.assignedCourses || [];
 
       // Remove instructor from courses they no longer teach
       oldAssignedCourses.forEach((courseCode) => {
+        // Check if course is no longer assigned
         if (!newAssignedCourses.includes(courseCode)) {
-          // Instructor no longer teaches this course
+          // This course is no longer assigned to the instructor
           const courseIndex = CourseManager.courses.findIndex(
-            (c) => c.code === courseCode
+            (course) => course.code === courseCode
           );
-          if (
-            courseIndex !== -1 &&
+          if (courseIndex !== -1 &&
             CourseManager.courses[courseIndex].instructor &&
-            CourseManager.courses[courseIndex].instructor.id === instructor.id
+            CourseManager.courses[courseIndex].instructor.id === editInstructor.id
           ) {
-            CourseManager.courses[courseIndex].instructor = null;
+            CourseManager.courses[courseIndex].instructor = "";
           }
         }
       });
@@ -359,12 +377,14 @@ class CourseManager {
         if (!oldAssignedCourses.includes(courseCode)) {
           // This is a new assignment
           const courseIndex = CourseManager.courses.findIndex(
-            (c) => c.code === courseCode
+            (course) => course.code === courseCode
           );
+
+          // If the course is found, add the instructor to the course's instructor property
           if (courseIndex !== -1) {
             CourseManager.courses[courseIndex].instructor = {
-              id: instructor.id,
-              name: instructor.name,
+              id: editInstructor.id,
+              name: editInstructor.name,
               type: "instructor",
             };
           }
@@ -373,16 +393,16 @@ class CourseManager {
 
       // Update instructor info in all assigned courses
       CourseManager.courses.forEach((course) => {
-        if (course.instructor && course.instructor.id === instructor.id) {
-          course.instructor.name = instructor.name;
+        if (course.instructor && course.instructor.id === editInstructor.id) {
+          course.instructor.name = editInstructor.name;
         }
       });
 
       // Update instructor data
-      CourseManager.instructors[index].name = instructor.name;
-      CourseManager.instructors[index].email = instructor.email;
-      CourseManager.instructors[index].phone = instructor.phone;
-      CourseManager.instructors[index].address = instructor.address;
+      CourseManager.instructors[index].name = editInstructor.name;
+      CourseManager.instructors[index].email = editInstructor.email;
+      CourseManager.instructors[index].phone = editInstructor.phone;
+      CourseManager.instructors[index].address = editInstructor.address;
       CourseManager.instructors[index].assignedCourses = newAssignedCourses;
 
       // Save all data
@@ -400,7 +420,9 @@ class CourseManager {
     }
   }
 
+  // Edit course
   static editCourse(editedCourse) {
+    // Find course to edit
     const index = CourseManager.courses.findIndex(
       (course) => String(course.id) === String(editedCourse.id)
     );
