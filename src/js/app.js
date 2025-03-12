@@ -1,51 +1,60 @@
 import Ui from "./Ui.js";
 import CourseManager from "./courseManager";
-import Person from "./person.js";
 
-// Selecting buttons
+// DOM element selectors
+// Navigation buttons
 const navButtons = document.querySelectorAll(".nav-button");
+
+// Course form elements
 const courseForm = document.querySelector(".form--courses");
 const courseName = document.querySelector(".form__input--course-name");
 const courseCode = document.querySelector(".form__input--course-code");
 const courseCredit = document.querySelector(".form__input--course-credit");
 
+// Student form elements
 const studentForm = document.querySelector(".form--students");
 const studentName = document.querySelector(".form__input--student-name");
 const studentEmail = document.querySelector(".form__input--student-email");
 const studentPhone = document.querySelector(".form__input--student-phone");
 const studentAddress = document.querySelector(".form__input--student-address");
-const studentEnrolledCourses = document.querySelectorAll(
-  ".form__select--student"
-);
+const studentEnrolledCourses = document.querySelectorAll(".form__select--student");
 
+// Instructor form elements
 const instructorForm = document.querySelector(".form--instructors");
 const instructorName = document.querySelector(".form__input--instructor-name");
 const instructorEmail = document.querySelector(".form__input--instructor-email");
 const instructorPhone = document.querySelector(".form__input--instructor-phone");
 const instructorAddress = document.querySelector(".form__input--instructor-address");
-const instructorAssignedCourses = document.querySelectorAll(
-  ".form__select--instructor"
-);
+const instructorAssignedCourses = document.querySelectorAll(".form__select--instructor");
 
-// DOMContentLoaded to initialize panel
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Adding event listeners
   navButtons.forEach((button) => {
     button.addEventListener("click", function (event) {
-      const buttonId = event.target.dataset.id;
-      Ui.renderPage(buttonId);
-      Ui.openFormOnClick(buttonId);
+      Ui.renderPage(event.target.dataset.id);
+    });
+  }); 
+
+  // Update course options when a student course select changes.
+  studentEnrolledCourses.forEach((select) => {
+    select.addEventListener("change", (e) => {
+      Ui.renderCourseOptions(e.target);
     });
   });
 
+  // Update course options for instructor form when a select changes.
+  instructorAssignedCourses.forEach((select) => {
+    select.addEventListener("change", () => {
+      Ui.renderCourseOptionsInstructor();
+    });
+  });
+
+  // Validate course form.
   function validateCourseForm() {
-    if (!courseName.value || !courseCode.value || !courseCredit.value) {
-      return false;
-    }
-    // courseName.value && courseErrorName.style.visibility = "visible"
-    return true;
+    return courseName.value && courseCode.value && courseCredit.value;
   }
 
+  // Course form submission.
   courseForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const modal = document.querySelector(".form-modal__courses");
@@ -65,34 +74,34 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         CourseManager.addCourses(course);
       }
-      Ui.closeForm(modal, courseForm.dataset.id);
-      Ui.clearPage();
-      Ui.renderData("courses");
+
+      // Clear form and close modal.
+      courseForm.reset();
+      Ui.closeForm(modal, "courses");
     }
   });
 
-  function validateStudentForm() {
-    if (
-      !studentName.value ||
-      !studentEmail.value ||
-      !studentPhone.value ||
-      !studentAddress.value /*  ||
-      !studentEnrolledCourses.value */
-    ) {
-      return false;
-    }
-    return true;
+  // Validate student form.
+  function validateStudentForm(enrolledCourses) {    
+    return (
+      studentName.value &&
+      studentEmail.value &&
+      studentPhone.value &&
+      studentAddress.value &&
+      enrolledCourses.length >= 1
+    );
   }
 
+  // Student form submission.
   studentForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const modal = document.querySelector(".form-modal__students");
 
-    const enrolledCourses = Array.from(studentEnrolledCourses).map((course) => {
-      return course.value;
-    });
+    const enrolledCourses = Array.from(studentEnrolledCourses)
+      .filter((course) => course.value !== "")
+      .map((course) => course.value);
 
-    if (validateStudentForm()) {
+    if (validateStudentForm(enrolledCourses)) {
       const student = {
         name: studentName.value,
         email: studentEmail.value,
@@ -102,39 +111,42 @@ document.addEventListener("DOMContentLoaded", () => {
         type: "student",
       };
 
-      CourseManager.addPerson(student);
-      Ui.closeForm(modal, studentForm.dataset.id);
+      const formButton = studentForm.querySelector(".form__button");
+
+      if (formButton.dataset.action === "edit") {
+        student.id = formButton.dataset.studentId;
+        CourseManager.editStudent(student);
+      } else {
+        CourseManager.addStuddent(student);
+      }
+
+      // Clear form and close modal.
       studentForm.reset();
+      Ui.closeForm(modal, "students");
     }
   });
 
-  function validateInstructorForm() {
-    console.log(
-      !instructorName.value
+  // Validate instructor form.
+  function validateInstructorForm(assignedCourses) {
+    return (
+      instructorName.value &&
+      instructorEmail.value &&
+      instructorPhone.value &&
+      instructorAddress.value &&
+      assignedCourses.length >= 1
     );
-    if (
-      !instructorName.value ||
-      !instructorEmail.value ||
-      !instructorPhone.value ||
-      !instructorAddress.value /*  ||
-      !instructorAssignedCourses.value */
-    ) {
-      return false;
-    }
-    return true;
   }
+
+  // Instructor form submission.
   instructorForm.addEventListener("submit", (e) => {
     e.preventDefault();
-
     const modal = document.querySelector(".form-modal__instructors");
 
-    const assignedCourses = Array.from(instructorAssignedCourses).map(
-      (course) => {
-        return course.value;
-      }
-    );
+    const assignedCourses = Array.from(instructorAssignedCourses)
+      .filter((course) => course.value !== "")
+      .map((course) => course.value);
 
-    if (validateInstructorForm()) {
+    if (validateInstructorForm(assignedCourses)) {
       const instructor = {
         name: instructorName.value,
         email: instructorEmail.value,
@@ -144,9 +156,18 @@ document.addEventListener("DOMContentLoaded", () => {
         type: "instructor",
       };
 
-      CourseManager.addPerson(instructor);
-      Ui.closeForm(modal, instructorForm.dataset.id);
+      const formButton = instructorForm.querySelector(".form__button");
+
+      if (formButton.dataset.action === "edit") {
+        instructor.id = formButton.dataset.instructorId;
+        CourseManager.editInstructor(instructor);
+      } else {
+        CourseManager.addInstructor(instructor);
+      }
+
+      // Clear form and close modal.
       instructorForm.reset();
+      Ui.closeForm(modal, "instructors");
     }
   });
 });
