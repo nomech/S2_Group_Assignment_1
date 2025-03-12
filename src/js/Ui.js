@@ -40,16 +40,15 @@ class Ui {
     const addButton = document.querySelector(".panel__add");
     const closeButton = document.querySelectorAll(".form-modal__close");
 
-    // Render course options.
-    if (id === "students") {
-      Ui.renderCourseOptions();
-    } else if (id === "instructors") {
-      Ui.renderCourseOptionsInstructor();
-    }
-
     // Open the form when the add button is clicked.
     addButton.addEventListener("click", () => {
       Ui.openForm(form, id);
+      // Render course options.
+      if (id === "students") {
+        Ui.renderCourseOptions();
+      } else if (id === "instructors") {
+        Ui.renderCourseOptionsInstructor();
+      }
     });
 
     // Close the form when the close button is clicked.
@@ -165,6 +164,7 @@ class Ui {
 
           // Add the show class to the form modal.
           Ui.openForm(studentForm, "students");
+          Ui.renderCourseOptionsStudentEdit(item.enrolledCourses);
         });
       } else if (item.type === "instructor") {
         // Create instructor card elements.
@@ -229,6 +229,7 @@ class Ui {
           );
           const formButton = instructorForm.querySelector(".form__button");
 
+          // Pre-fill the form with the instructor data.
           nameInput.value = item.name;
           emailInput.value = item.email;
           phoneInput.value = item.phone;
@@ -248,6 +249,7 @@ class Ui {
 
           // Add the show class to the form modal.
           Ui.openForm(instructorForm, "instructors");
+          Ui.renderCourseOptionsInstructorEdit(item.assignedCourses);
         });
       } else if (id === "courses") {
         // Create course card elements.
@@ -353,9 +355,11 @@ class Ui {
 
   // Clear the panel and data container.
   static clearPage() {
+    // Select the panel and data elements.
     const panel = document.querySelector(".panel");
     panel.innerHTML = "";
 
+    // Select the data container.
     const data = document.querySelector(".data");
     data.innerHTML = "";
   }
@@ -396,41 +400,38 @@ class Ui {
 
   // Render course options for student form select dropdowns.
   static renderCourseOptions() {
-    // Get the courses data from local storage or an empty array.
+    // Get courses data from local storage.
     const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
 
-    // Get the selected values from the select dropdowns.
-    const selectedValues = Array.from(
-      document.querySelectorAll(".form__select")
-    )
+    // Select all student dropdowns
+    const courseInputs = document.querySelectorAll(".form__select");
+
+    // Get the selected values across all dropdowns.
+    const selectedValues = Array.from(courseInputs)
       .map((select) => select.value)
       .filter((value) => value !== "");
 
-    // Select the course inputs.
-    const courseInputs = document.querySelectorAll(".form__select");
-
-    // Render the course options.
+    // Loop through each dropdown.
     courseInputs.forEach((element) => {
-      // Get the current value of the select dropdown.
-      const currentValue = element.value;
 
+      // Get the current value from the selected courses array.
+      const currentValue = element.value;
+      element.innerHTML = "";
+      
       // Create a default option.
       const defaultOption = document.createElement("option");
-
-      // Clear the select dropdown.
-      element.innerHTML = "";
       defaultOption.value = "";
       defaultOption.innerText = "Select Course";
-
-      // Append the default option to the select dropdown.
       element.append(defaultOption);
 
-      // Append the course options to the select dropdown.
+      // Loop through each course.
       coursesData.forEach((course) => {
-        // Skip the course if it is already selected.
+        // Skip the course if it's already selected in another dropdown (and isn't the current value)
+        // or if the course has 30 or more students.
         if (
-          selectedValues.includes(course.code) &&
-          course.code !== currentValue
+          (selectedValues.includes(course.code) &&
+            course.code !== currentValue) ||
+          course.students.length >= 30
         ) {
           return;
         }
@@ -443,72 +444,163 @@ class Ui {
         element.append(option);
       });
 
-      // Set the select dropdown value.
+      // Restore current selection.
       element.value = currentValue;
     });
   }
 
-  static renderCourseOptionsInstructor() {
-    // Get the courses data from local storage or an empty array.
+  static renderCourseOptionsStudentEdit(selectedCourses) {
+    // Get all courses from local storage.
     const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
+    // Select all student dropdown elements (using, for example, .form__select--student).
+    const courseInputs = document.querySelectorAll(".form__select--student");
 
-/*     for(let i = 0; i < coursesData.length; i++) {
-      if(coursesData[i].instructor){
-        return;
-      }
-    }
-       */
+    // Create a list of already selected course codes (ignoring empty values).
+    const selectedValues = selectedCourses.filter((val) => val !== "");
 
-    // Get the selected values from the select dropdowns.
-    const selectedValues = Array.from(document.querySelectorAll(".form__select"))
-      .map((select) => select.value)
-      .filter((value) => value !== "");
-
-      
-      
-    // Select the course inputs.
-    const courseInputs = document.querySelectorAll(".form__select");
-
-    // Render the course options.
-    courseInputs.forEach((element) => {
-      // Get the current value of the select dropdown.
-      const currentValue = element.value;
+    // Loop through each dropdown.
+    courseInputs.forEach((element, index) => {
+      const currentValue = selectedCourses[index] || "";
+      element.innerHTML = "";
 
       // Create a default option.
       const defaultOption = document.createElement("option");
-
-      // Clear the select dropdown.
-      element.innerHTML = "";
       defaultOption.value = "";
       defaultOption.innerText = "Select Course";
-
-      // Append the default option to the select dropdown.
       element.append(defaultOption);
 
-      // Append the course options to the select dropdown.
       coursesData.forEach((course) => {
-        if (selectedValues.includes(course.code) && course.code !== currentValue) {
+        // If this course code is already selected in another dropdown and isn't the current value, skip it.
+        if (
+          selectedValues.includes(course.code) &&
+          course.code !== currentValue
+        ) {
           return;
         }
 
         // Create an option element.
         const option = document.createElement("option");
-
-        // Set the option value and text content.
         option.value = course.code;
-
-        // Set the data-id attribute.
         option.innerText = course.name;
-
-        // Append the option to the select dropdown.
         option.dataset.id = course.id;
 
-        // Append the option to the select dropdown.
+        // Set the selected attribute if the course code matches the current value.
+        if (course.code === currentValue) {
+          option.selected = true;
+        }
+
+        // Append the option to the select element.
+        element.append(option);
+      });
+      element.value = currentValue;
+    });
+  }
+
+  static renderCourseOptionsInstructor() {
+    // Get all courses from local storage.
+    const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
+    // Select all instructor dropdowns.
+    const courseInputs = document.querySelectorAll(".form__select--instructor");
+
+    // Get the selected values from the instructor dropdowns.
+    const selectedValues = Array.from(courseInputs)
+      .map((select) => select.value)
+      .filter((value) => value !== "");
+
+    // Loop through each dropdown.
+    courseInputs.forEach((element) => {
+      // Get the current value from the selected courses array.
+      const currentValue = element.value;
+      element.innerHTML = "";
+
+      // Create a default option.
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.innerText = "Select Course";
+      element.append(defaultOption);
+
+      // Loop through each course.
+      coursesData.forEach((course) => {
+        // Skip if the course is already selected elsewhere (unless it's the current value).
+        if (
+          selectedValues.includes(course.code) &&
+          course.code !== currentValue
+        ) {
+          return;
+        }
+
+        // Create an option element.
+        const option = document.createElement("option");
+        option.value = course.code;
+        option.innerText = course.name;
+        option.dataset.id = course.id;
+
+        // Set the selected attribute if the course code matches the current value.
+        if (course.code === currentValue) {
+          option.selected = true;
+        }
+
+        // Append the option to the select element.
         element.append(option);
       });
 
-      // Set the select dropdown value.
+      // Restore the current selection.
       element.value = currentValue;
+    });
+  }
+
+  static renderCourseOptionsInstructorEdit(selectedCourses) {
+    // Get all courses from local storage.
+    const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
+    // Select all instructor dropdowns.
+    const selectElements = document.querySelectorAll(
+      ".form__select--instructor"
+    );
+
+    // Filter out empty selections.
+    const selectedValues = selectedCourses.filter((val) => val !== "");
+
+    // Loop through each dropdown.
+    selectElements.forEach((select, index) => {
+      // Get the current value from the selected courses array.
+      const currentValue = selectedCourses[index] || "";
+      select.innerHTML = "";
+
+      // Create a default option.
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "Select Course";
+
+      // Append the default option to the select element.
+      select.append(defaultOption);
+
+      // Loop through each course.
+      coursesData.forEach((course) => {
+        // Skip duplicate options unless it's the current selection.
+        if (
+          selectedValues.includes(course.code) &&
+          course.code !== currentValue
+        ) {
+          return;
+        }
+
+        // Create an option element.
+        const option = document.createElement("option");
+        option.value = course.code;
+        option.textContent = course.name;
+        option.dataset.id = course.id;
+
+        // Set the selected if the course code matches the current value.
+        if (course.code === currentValue) {
+          option.selected = true;
+        }
+
+        // Append the option to the select element.
+        select.append(option);
+      });
+
+      // Restore the current selection.
+      select.value = currentValue;
     });
   }
 }

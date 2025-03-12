@@ -17,23 +17,32 @@ const studentName = document.querySelector(".form__input--student-name");
 const studentEmail = document.querySelector(".form__input--student-email");
 const studentPhone = document.querySelector(".form__input--student-phone");
 const studentAddress = document.querySelector(".form__input--student-address");
-const studentEnrolledCourses = document.querySelectorAll(".form__select--student");
+const studentEnrolledCourses = document.querySelectorAll(
+  ".form__select--student"
+);
 
 // Instructor form elements
 const instructorForm = document.querySelector(".form--instructors");
 const instructorName = document.querySelector(".form__input--instructor-name");
-const instructorEmail = document.querySelector(".form__input--instructor-email");
-const instructorPhone = document.querySelector(".form__input--instructor-phone");
-const instructorAddress = document.querySelector(".form__input--instructor-address");
-const instructorAssignedCourses = document.querySelectorAll(".form__select--instructor");
-
+const instructorEmail = document.querySelector(
+  ".form__input--instructor-email"
+);
+const instructorPhone = document.querySelector(
+  ".form__input--instructor-phone"
+);
+const instructorAddress = document.querySelector(
+  ".form__input--instructor-address"
+);
+const instructorAssignedCourses = document.querySelectorAll(
+  ".form__select--instructor"
+);
 
 document.addEventListener("DOMContentLoaded", () => {
   navButtons.forEach((button) => {
     button.addEventListener("click", function (event) {
       Ui.renderPage(event.target.dataset.id);
     });
-  }); 
+  });
 
   // Update course options when a student course select changes.
   studentEnrolledCourses.forEach((select) => {
@@ -59,15 +68,19 @@ document.addEventListener("DOMContentLoaded", () => {
     e.preventDefault();
     const modal = document.querySelector(".form-modal__courses");
 
+    // Validate course form.
     if (validateCourseForm()) {
+      // Create course object.
       const course = {
         name: courseName.value,
         code: courseCode.value,
         credit: courseCredit.value,
       };
 
+      // Get form button.
       const formButton = courseForm.querySelector(".form__button");
 
+      // Check if we're editing or adding a course.
       if (formButton.dataset.action === "edit") {
         course.id = formButton.dataset.courseId;
         CourseManager.editCourse(course);
@@ -82,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Validate student form.
-  function validateStudentForm(enrolledCourses) {    
+  function validateStudentForm(enrolledCourses) {
     return (
       studentName.value &&
       studentEmail.value &&
@@ -95,13 +108,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Student form submission.
   studentForm.addEventListener("submit", (e) => {
     e.preventDefault();
+
+    // Get student modal.
     const modal = document.querySelector(".form-modal__students");
 
+    // Get enrolled courses.
     const enrolledCourses = Array.from(studentEnrolledCourses)
       .filter((course) => course.value !== "")
       .map((course) => course.value);
 
+    // Validate student form.
     if (validateStudentForm(enrolledCourses)) {
+      // Create student object.
       const student = {
         name: studentName.value,
         email: studentEmail.value,
@@ -111,8 +129,10 @@ document.addEventListener("DOMContentLoaded", () => {
         type: "student",
       };
 
+      // Get form button.
       const formButton = studentForm.querySelector(".form__button");
 
+      // Check if we're editing or adding a student.
       if (formButton.dataset.action === "edit") {
         student.id = formButton.dataset.studentId;
         CourseManager.editStudent(student);
@@ -126,26 +146,65 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Validate instructor form.
   function validateInstructorForm(assignedCourses) {
-    return (
+    // Get error message container in the instructor form.
+    const errorContainer = instructorForm.querySelector(".form-error");
+    if (errorContainer) errorContainer.innerText = ""; // clear previous messages
+
+    // Basic field validation.
+    if (
       instructorName.value &&
       instructorEmail.value &&
       instructorPhone.value &&
       instructorAddress.value &&
       assignedCourses.length >= 1
-    );
+    ) {
+      // Retrieve courses data.
+      const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
+      // Get the current instructor id (if editing).
+      const formButton = instructorForm.querySelector(".form__button");
+      const currentInstructorId = formButton.dataset.instructorId || "";
+
+      // Loop through each selected course.
+      for (let courseCode of assignedCourses) {
+        const course = coursesData.find((course) => course.code === courseCode);
+        if (course && course.instructor && course.instructor.id) {
+
+          // If we're editing and the course is already assigned to the current instructor, skip it.
+          if (currentInstructorId && course.instructor.id === currentInstructorId) {
+            continue;
+          }
+
+          // Display error message if the course is already assigned to an instructor.
+          if (errorContainer) {
+            errorContainer.innerText = `Course "${course.name}" already has an instructor. Please select another course.`;
+          }
+          return false;
+        }
+      }
+      return true;
+    }
+
+    if (errorContainer) {
+      errorContainer.innerText =
+        "Please fill in all required fields and select at least one course.";
+    }
+    return false;
   }
 
   // Instructor form submission.
   instructorForm.addEventListener("submit", (e) => {
     e.preventDefault();
+
+    // Get instructor modal.
     const modal = document.querySelector(".form-modal__instructors");
 
+    // Get assigned courses.
     const assignedCourses = Array.from(instructorAssignedCourses)
       .filter((course) => course.value !== "")
       .map((course) => course.value);
 
+    // Validate instructor form.
     if (validateInstructorForm(assignedCourses)) {
       const instructor = {
         name: instructorName.value,
@@ -156,8 +215,10 @@ document.addEventListener("DOMContentLoaded", () => {
         type: "instructor",
       };
 
+      // Get form button.
       const formButton = instructorForm.querySelector(".form__button");
 
+      // Check if we're editing or adding an instructor.
       if (formButton.dataset.action === "edit") {
         instructor.id = formButton.dataset.instructorId;
         CourseManager.editInstructor(instructor);
