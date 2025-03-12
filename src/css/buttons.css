@@ -5,4 +5,30 @@
 
 .nav-button {
   font-size: 24px;
+  border: 0.5px solid black;
+  background-color: var(--color-navButton);
+}
+.nav-button:hover {
+  background-color: var(--color-navButton-hover);
+  transition: color 0.3s;
+}
+
+.card__edit {
+  background-color: var(--color-editButton);
+  border: 0.5px solid black;;
+  font-size: 18px;
+}
+.card__edit:hover {
+  background-color: var(--color-primary);
+  transition: color 0.3s;
+}
+
+.card__delete {
+  background-color: var(--color-removeButton);
+  border: 0.5px solid black;
+  font-size: 18px;
+}
+.card__delete:hover {
+  background-color: var(--color-removeButton-hover);
+  transition: color 0.3s;
 }
