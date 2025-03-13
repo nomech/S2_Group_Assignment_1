@@ -60,7 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Validate course form.
   function validateCourseForm() {
-    return courseName.value && courseCode.value && courseCredit.value;
+    const storedCourses = JSON.parse(localStorage.getItem('courses'));
+    console.log(storedCourses);
+    const findCode = storedCourses.find((course) => {
+      return course.code === courseCode.value;
+    });
+
+    if (findCode) {
+      showErrorModal();
+      return;
+    } else {
+      return courseName.value && courseCode.value && courseCredit.value;
+    }
+  }
+
+  // Function to display course code error modal
+  function showErrorModal() {
+    const errorModal = document.querySelector('.error-modal');
+
+    errorModal.style.display = 'block';
+
+    setTimeout(() => {
+      errorModal.style.display = 'none';
+    }, 3000);
   }
 
   courseForm.addEventListener('submit', (e) => {
