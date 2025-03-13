@@ -15,22 +15,22 @@ const studentEmail = document.querySelector('.form__input--student-email');
 const studentPhone = document.querySelector('.form__input--student-phone');
 const studentAddress = document.querySelector('.form__input--student-address');
 const studentEnrolledCourses = document.querySelectorAll(
-  '.form__select--student'
+  '.form__select--student',
 );
 
 const instructorForm = document.querySelector('.form--instructors');
 const instructorName = document.querySelector('.form__input--instructor-name');
 const instructorEmail = document.querySelector(
-  '.form__input--instructor-email'
+  '.form__input--instructor-email',
 );
 const instructorPhone = document.querySelector(
-  '.form__input--instructor-phone'
+  '.form__input--instructor-phone',
 );
 const instructorAddress = document.querySelector(
-  '.form__input--instructor-address'
+  '.form__input--instructor-address',
 );
 const instructorAssignedCourses = document.querySelectorAll(
-  '.form__select--instructor'
+  '.form__select--instructor',
 );
 
 // DOMContentLoaded to initialize panel
@@ -44,19 +44,32 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Update course options when a student course select changes.
+  studentEnrolledCourses.forEach((select) => {
+    select.addEventListener('change', (e) => {
+      Ui.renderCourseOptions(e.target);
+    });
+  });
+
+  // Update course options for instructor form when a select changes.
+  instructorAssignedCourses.forEach((select) => {
+    select.addEventListener('change', () => {
+      Ui.renderCourseOptionsInstructor();
+    });
+  });
+
+  // Validate course form.
   function validateCourseForm() {
-    if (!courseName.value || !courseCode.value || !courseCredit.value) {
-      return false;
-    }
-    // courseName.value && courseErrorName.style.visibility = "visible"
-    return true;
+    return courseName.value && courseCode.value && courseCredit.value;
   }
 
   courseForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const modal = document.querySelector('.form-modal__courses');
 
+    // Validate course form.
     if (validateCourseForm()) {
+      // Create course object.
       const course = {
         name: courseName.value,
         code: courseCode.value,
@@ -93,11 +106,14 @@ document.addEventListener('DOMContentLoaded', () => {
     e.preventDefault();
     const modal = document.querySelector('.form-modal__students');
 
-    const enrolledCourses = Array.from(studentEnrolledCourses).map((course) => {
-      return course.value;
-    });
+    // Get enrolled courses.
+    const enrolledCourses = Array.from(studentEnrolledCourses)
+      .filter((course) => course.value !== '')
+      .map((course) => course.value);
 
-    if (validateStudentForm()) {
+    // Validate student form.
+    if (validateStudentForm(enrolledCourses)) {
+      // Create student object.
       const student = {
         name: studentName.value,
         email: studentEmail.value,
@@ -129,22 +145,52 @@ document.addEventListener('DOMContentLoaded', () => {
       !instructorAddress.value
       // !instructorAssignedCourses.value
     ) {
-      return false;
+      // Retrieve courses data.
+      const coursesData = JSON.parse(localStorage.getItem('courses')) || [];
+      // Get the current instructor id (if editing).
+      const formButton = instructorForm.querySelector('.form__button');
+      const currentInstructorId = formButton.dataset.instructorId || '';
+
+      // Loop through each selected course.
+      for (let courseCode of assignedCourses) {
+        const course = coursesData.find((course) => course.code === courseCode);
+        if (course && course.instructor && course.instructor.id) {
+          // If we're editing and the course is already assigned to the current instructor, skip it.
+          if (
+            currentInstructorId &&
+            course.instructor.id === currentInstructorId
+          ) {
+            continue;
+          }
+
+          // Display error message if the course is already assigned to an instructor.
+          if (errorContainer) {
+            errorContainer.innerText = `Course "${course.name}" already has an instructor. Please select another course.`;
+          }
+          return false;
+        }
+      }
+      return true;
     }
-    return true;
+
+    if (errorContainer) {
+      errorContainer.innerText =
+        'Please fill in all required fields and select at least one course.';
+    }
+    return false;
   }
   instructorForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const modal = document.querySelector('.form-modal__instructors');
 
-    const assignedCourses = Array.from(instructorAssignedCourses).map(
-      (course) => {
-        return course.value;
-      }
-    );
+    // Get assigned courses.
+    const assignedCourses = Array.from(instructorAssignedCourses)
+      .filter((course) => course.value !== '')
+      .map((course) => course.value);
 
-    if (validateInstructorForm()) {
+    // Validate instructor form.
+    if (validateInstructorForm(assignedCourses)) {
       const instructor = {
         name: instructorName.value,
         email: instructorEmail.value,
