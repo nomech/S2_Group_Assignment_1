@@ -15,7 +15,7 @@
 
 .card__edit {
   background-color: var(--color-editButton);
-  border: 0.5px solid black;;
+  border: 0.5px solid black;
   font-size: 18px;
 }
 .card__edit:hover {

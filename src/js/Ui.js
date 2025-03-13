@@ -1,4 +1,4 @@
-import CourseManager from './courseManager';
+import CourseManager from "./courseManager";
 
 class Ui {
   // Render the page: clear previous content, create a panel, and render stored data.
@@ -11,16 +11,16 @@ class Ui {
   // Create a navigation panel with a title and an add button.
   static createPanel(id) {
     // Select the panel and form elements.
-    const panel = document.querySelector('.panel');
+    const panel = document.querySelector(".panel");
     const form = document.querySelector(`.form-modal__${id}`);
 
     // Create the panel title and add button.
-    const title = document.createElement('h2');
-    const addButton = document.createElement('button');
+    const title = document.createElement("h2");
+    const addButton = document.createElement("button");
 
     // Add classes
-    title.classList.add('panel__title');
-    addButton.classList.add('panel__add', 'button', 'panel__button');
+    title.classList.add("panel__title");
+    addButton.classList.add("panel__add", "button", "panel__button");
 
     // Set text content
     title.textContent = id;
@@ -37,23 +37,23 @@ class Ui {
   // Open the form when the add button is clicked.
   static openFormOnClick = (form, id) => {
     // Select the add and close buttons.
-    const addButton = document.querySelector('.panel__add');
-    const closeButton = document.querySelectorAll('.form-modal__close');
+    const addButton = document.querySelector(".panel__add");
+    const closeButton = document.querySelectorAll(".form-modal__close");
 
     // Open the form when the add button is clicked.
-    addButton.addEventListener('click', () => {
+    addButton.addEventListener("click", () => {
       Ui.openForm(form, id);
       // Render course options.
-      if (id === 'students') {
+      if (id === "students") {
         Ui.renderCourseOptions();
-      } else if (id === 'instructors') {
+      } else if (id === "instructors") {
         Ui.renderCourseOptionsInstructor();
       }
     });
 
     // Close the form when the close button is clicked.
     closeButton.forEach((button) => {
-      button.addEventListener('click', () => {
+      button.addEventListener("click", () => {
         Ui.closeForm(form, id);
       });
     });
@@ -65,32 +65,32 @@ class Ui {
     const data = JSON.parse(localStorage.getItem(id)) || [];
 
     // Select the data container.
-    const dataContainer = document.querySelector('.data');
+    const dataContainer = document.querySelector(".data");
 
     // Render the data cards.
     data.forEach((item) => {
       // Create card elements.
-      const card = document.createElement('div');
-      const cardTitle = document.createElement('h3');
-      const cardContent = document.createElement('div');
-      const deleteButton = document.createElement('button');
-      const editButton = document.createElement('button');
+      const card = document.createElement("div");
+      const cardTitle = document.createElement("h3");
+      const cardContent = document.createElement("div");
+      const deleteButton = document.createElement("button");
+      const editButton = document.createElement("button");
 
       // Add classes.
-      card.classList.add('card');
-      cardTitle.classList.add('data__title');
-      cardContent.classList.add('card__item');
+      card.classList.add("card");
+      cardTitle.classList.add("data__title");
+      cardContent.classList.add("card__item");
 
       // Set data attributes.
       card.dataset.id = item.id;
 
-      if (item.type === 'student') {
+      if (item.type === "student") {
         // Create student card elements.
-        const email = document.createElement('p');
-        const phone = document.createElement('p');
-        const address = document.createElement('p');
-        const enrolledCourses = document.createElement('p');
-        const buttonGroup = document.createElement('div');
+        const email = document.createElement("p");
+        const phone = document.createElement("p");
+        const address = document.createElement("p");
+        const enrolledCourses = document.createElement("p");
+        const buttonGroup = document.createElement("div");
 
         // Set text content and classes.
         cardTitle.textContent = item.name;
@@ -100,13 +100,13 @@ class Ui {
         enrolledCourses.textContent = `Enrolled Courses: ${item.enrolledCourses}`;
 
         // Append elements to the card.
-        deleteButton.classList.add('button', 'card__delete');
-        editButton.classList.add('button', 'card__edit');
-        buttonGroup.classList.add('card__button-group');
+        deleteButton.classList.add("button", "card__delete");
+        editButton.classList.add("button", "card__edit");
+        buttonGroup.classList.add("card__button-group");
 
         // Set text content and data attributes.
-        editButton.textContent = 'Edit';
-        deleteButton.textContent = 'Delete';
+        editButton.textContent = "Edit";
+        deleteButton.textContent = "Delete";
 
         // Set data attributes.
         editButton.dataset.id = item.id;
@@ -118,23 +118,23 @@ class Ui {
         cardContent.append(buttonGroup);
 
         // Delete student event.
-        deleteButton.addEventListener('click', () => {
-          CourseManager.deleteStudent(item.id, 'students');
+        deleteButton.addEventListener("click", () => {
+          CourseManager.deleteStudent(item.id, "students");
         });
-        editButton.addEventListener('click', () => {
+        editButton.addEventListener("click", () => {
           const studentForm = document.querySelector(`.form-modal__students`);
 
           if (!studentForm) {
-            console.error('Student form not found!');
+            console.error("Student form not found!");
             return;
           }
 
-          const nameInput = studentForm.querySelector('#name');
-          const emailInput = studentForm.querySelector('#email');
-          const phoneInput = studentForm.querySelector('#phone');
-          const addressInput = studentForm.querySelector('#address');
-          const courseSelect = studentForm.querySelector('#course');
-          const formButton = studentForm.querySelector('.form__button');
+          const nameInput = studentForm.querySelector("#name");
+          const emailInput = studentForm.querySelector("#email");
+          const phoneInput = studentForm.querySelector("#phone");
+          const addressInput = studentForm.querySelector("#address");
+          const courseSelect = studentForm.querySelector("#course");
+          const formButton = studentForm.querySelector(".form__button");
 
           if (
             !nameInput ||
@@ -143,7 +143,7 @@ class Ui {
             !addressInput ||
             !phoneInput
           ) {
-            console.error('Form inputs not found!');
+            console.error("Form inputs not found!");
             return;
           }
 
@@ -153,35 +153,35 @@ class Ui {
           addressInput.value = item.address;
           courseSelect.value = item.enrolledCourses;
 
-          formButton.textContent = 'Edit Student';
-          formButton.dataset.action = 'edit';
+          formButton.textContent = "Edit Student";
+          formButton.dataset.action = "edit";
           formButton.dataset.studentId = item.id; // Store the course ID for later to be used in app.js
 
-          this.openForm(studentForm, 'students');
+          this.openForm(studentForm, "students");
           CourseManager.editPerson(item);
         });
         cardListItem.textContent = item.email;
-      } else if (id === 'instructors') {
-        deleteButton.addEventListener('click', () => {
+      } else if (id === "instructors") {
+        deleteButton.addEventListener("click", () => {
           CourseManager.deletePerson(item.id);
         });
-        editButton.addEventListener('click', () => {
+        editButton.addEventListener("click", () => {
           const instructorForm = document.querySelector(
             `.form-modal__instructors`,
           );
           const emailInput = studentForm.querySelector(
-            '.form__input--student-email',
+            ".form__input--student-email",
           );
           const phoneInput = studentForm.querySelector(
-            '.form__input--student-phone',
+            ".form__input--student-phone",
           );
           const addressInput = studentForm.querySelector(
-            '.form__input--student-address',
+            ".form__input--student-address",
           );
           const courseSelect = studentForm.querySelectorAll(
-            '.form__select--student',
+            ".form__select--student",
           );
-          const formButton = studentForm.querySelector('.form__button');
+          const formButton = studentForm.querySelector(".form__button");
 
           // Pre-fill the form with the student data.
           nameInput.value = item.name;
@@ -196,16 +196,16 @@ class Ui {
             }
           });
 
-          this.openForm(instructorForm, 'instructors');
+          this.openForm(instructorForm, "instructors");
           CourseManager.editPerson(item);
         });
-      } else if (item.type === 'instructor') {
+      } else if (item.type === "instructor") {
         // Create instructor card elements.
-        const email = document.createElement('p');
-        const phone = document.createElement('p');
-        const address = document.createElement('p');
-        const assignedCourses = document.createElement('p');
-        const buttonGroup = document.createElement('div');
+        const email = document.createElement("p");
+        const phone = document.createElement("p");
+        const address = document.createElement("p");
+        const assignedCourses = document.createElement("p");
+        const buttonGroup = document.createElement("div");
 
         // Set text content and classes.
         cardTitle.textContent = item.name;
@@ -218,13 +218,13 @@ class Ui {
         cardContent.append(email, phone, address, assignedCourses);
 
         // Set text content for buttons.
-        deleteButton.textContent = 'Delete';
-        editButton.textContent = 'Edit';
+        deleteButton.textContent = "Delete";
+        editButton.textContent = "Edit";
 
         // Add classes for buttons.
-        buttonGroup.classList.add('card__button-group');
-        deleteButton.classList.add('button', 'card__delete');
-        editButton.classList.add('button', 'card__edit');
+        buttonGroup.classList.add("card__button-group");
+        deleteButton.classList.add("button", "card__delete");
+        editButton.classList.add("button", "card__edit");
 
         // Set data attributes for buttons.
         deleteButton.dataset.id = item.id;
@@ -235,32 +235,32 @@ class Ui {
         cardContent.append(buttonGroup);
 
         // Add event listeners for delete and edit buttons.
-        deleteButton.addEventListener('click', () => {
+        deleteButton.addEventListener("click", () => {
           // Delete the instructor.
-          CourseManager.deleteInstructor(item.id, 'instructors');
+          CourseManager.deleteInstructor(item.id, "instructors");
         });
 
-        editButton.addEventListener('click', () => {
+        editButton.addEventListener("click", () => {
           // Pre-fill the form for editing.
           const instructorForm = document.querySelector(
             `.form-modal__instructors`,
           );
           const nameInput = instructorForm.querySelector(
-            '.form__input--instructor-name',
+            ".form__input--instructor-name",
           );
           const emailInput = instructorForm.querySelector(
-            '.form__input--instructor-email',
+            ".form__input--instructor-email",
           );
           const phoneInput = instructorForm.querySelector(
-            '.form__input--instructor-phone',
+            ".form__input--instructor-phone",
           );
           const addressInput = instructorForm.querySelector(
-            '.form__input--instructor-address',
+            ".form__input--instructor-address",
           );
           const courseSelect = instructorForm.querySelectorAll(
-            '.form__select--instructor',
+            ".form__select--instructor",
           );
-          const formButton = instructorForm.querySelector('.form__button');
+          const formButton = instructorForm.querySelector(".form__button");
 
           // Pre-fill the form with the instructor data.
           nameInput.value = item.name;
@@ -276,31 +276,31 @@ class Ui {
           });
 
           // Set the form button text and data attributes.
-          formButton.textContent = 'Edit Instructor';
-          formButton.dataset.action = 'edit';
+          formButton.textContent = "Edit Instructor";
+          formButton.dataset.action = "edit";
           formButton.dataset.instructorId = item.id;
 
           // Add the show class to the form modal.
-          Ui.openForm(instructorForm, 'instructors');
+          Ui.openForm(instructorForm, "instructors");
           Ui.renderCourseOptionsInstructorEdit(item.assignedCourses);
         });
-      } else if (id === 'courses') {
+      } else if (id === "courses") {
         // Create course card elements.
-        const cardCode = document.createElement('p');
-        const cardCredit = document.createElement('p');
-        const cardInstructor = document.createElement('p');
+        const cardCode = document.createElement("p");
+        const cardCredit = document.createElement("p");
+        const cardInstructor = document.createElement("p");
 
         // Add classes to the elements.
-        cardCode.classList.add('card__code');
-        cardCredit.classList.add('card__credit');
-        cardInstructor.classList.add('card__instructor');
+        cardCode.classList.add("card__code");
+        cardCredit.classList.add("card__credit");
+        cardInstructor.classList.add("card__instructor");
 
         // Set text content.
         cardTitle.textContent = item.name;
         cardCode.textContent = `Code: ${item.code}`;
         cardCredit.textContent = `Credit: ${item.credit}`;
         cardInstructor.textContent = `Instructor: ${
-          item.instructor.name || 'None'
+          item.instructor.name || "None"
         }`;
 
         // Append elements to the card.
@@ -309,14 +309,14 @@ class Ui {
         // Add enrolled students to the card.
         if (item.students && item.students.length > 0) {
           // Create a list of enrolled students.
-          const studentsList = document.createElement('ul');
+          const studentsList = document.createElement("ul");
 
           // Set text content.
-          studentsList.textContent = 'Enrolled Students:';
+          studentsList.textContent = "Enrolled Students:";
 
           // Append students to the list.
           item.students.forEach((student) => {
-            const listItem = document.createElement('li');
+            const listItem = document.createElement("li");
             listItem.textContent = student.name || student;
             studentsList.append(listItem);
           });
@@ -326,16 +326,16 @@ class Ui {
         }
 
         // Add buttons to the card.
-        const buttonGroup = document.createElement('div');
+        const buttonGroup = document.createElement("div");
 
         // Add classes to the button group and buttons.
-        buttonGroup.classList.add('card__button-group');
-        editButton.classList.add('button', 'card__edit');
-        deleteButton.classList.add('button', 'card__delete');
+        buttonGroup.classList.add("card__button-group");
+        editButton.classList.add("button", "card__edit");
+        deleteButton.classList.add("button", "card__delete");
 
         // Set text content
-        editButton.textContent = 'Edit';
-        deleteButton.textContent = 'Delete';
+        editButton.textContent = "Edit";
+        deleteButton.textContent = "Delete";
 
         // Set data attributes.
         editButton.dataset.id = item.id;
@@ -346,24 +346,24 @@ class Ui {
         cardContent.append(buttonGroup);
 
         // Add event listeners for delete and edit buttons.
-        deleteButton.addEventListener('click', () => {
+        deleteButton.addEventListener("click", () => {
           CourseManager.deleteCourses(item.id);
         });
 
         // Edit course event.
-        editButton.addEventListener('click', () => {
+        editButton.addEventListener("click", () => {
           // Pre-fill the form for editing.
           const courseForm = document.querySelector(`.form-modal__courses`);
           const nameInput = courseForm.querySelector(
-            '.form__input--course-name',
+            ".form__input--course-name",
           );
           const codeInput = courseForm.querySelector(
-            '.form__input--course-code',
+            ".form__input--course-code",
           );
           const creditInput = courseForm.querySelector(
-            '.form__input--course-credit',
+            ".form__input--course-credit",
           );
-          const formButton = courseForm.querySelector('.form__button');
+          const formButton = courseForm.querySelector(".form__button");
 
           // Pre-fill the form with the course data.
           nameInput.value = item.name;
@@ -371,14 +371,14 @@ class Ui {
           creditInput.value = item.credit;
 
           // Set the form button text.
-          formButton.textContent = 'Edit Course';
+          formButton.textContent = "Edit Course";
 
           // Set the form button data attributes.
-          formButton.dataset.action = 'edit';
+          formButton.dataset.action = "edit";
           formButton.dataset.courseId = item.id;
 
           // Rely on the submit event in the app file for handling the edit.
-          Ui.openForm(courseForm, 'courses');
+          Ui.openForm(courseForm, "courses");
         });
       }
       card.append(cardTitle, cardContent);
@@ -389,26 +389,26 @@ class Ui {
   // Clear the panel and data container.
   static clearPage() {
     // Select the panel and data elements.
-    const panel = document.querySelector('.panel');
-    panel.innerHTML = '';
+    const panel = document.querySelector(".panel");
+    panel.innerHTML = "";
 
     // Select the data container.
-    const data = document.querySelector('.data');
-    data.innerHTML = '';
+    const data = document.querySelector(".data");
+    data.innerHTML = "";
   }
 
   // Add the show class to the modal if the data-id matches.
   static openForm(form, id) {
     if (form.dataset.id === id) {
-      form.classList.add('form-modal--show');
-      if (id === 'students' || id === 'instructor') {
+      form.classList.add("form-modal--show");
+      if (id === "students" || id === "instructor") {
       }
     }
   }
 
   static closeForm(form, id) {
     if (form.dataset.id === id) {
-      form.classList.remove('form-modal--show');
+      form.classList.remove("form-modal--show");
     }
   }
 
@@ -416,24 +416,24 @@ class Ui {
   static closeForm(form, id) {
     if (form.dataset.id === id) {
       // Select the form button .
-      const formButton = form.querySelector('.form__button');
+      const formButton = form.querySelector(".form__button");
 
       // Remove the show class from the modal.
-      form.classList.remove('form-modal--show');
+      form.classList.remove("form-modal--show");
 
       // Reset the form button text and data attributes.
-      formButton.dataset.action = 'add';
+      formButton.dataset.action = "add";
 
       // Reset the form button text.
       formButton.textContent = `Add ${id}`;
 
       // Reset the form inputs.
-      const inputs = form.querySelectorAll('input, select');
+      const inputs = form.querySelectorAll("input, select");
       inputs.forEach((input) => {
-        if (input.tagName.toLowerCase() === 'select') {
+        if (input.tagName.toLowerCase() === "select") {
           input.selectedIndex = 0;
         } else {
-          input.value = '';
+          input.value = "";
         }
       });
     }
@@ -442,26 +442,26 @@ class Ui {
   // Render course options for student form select dropdowns.
   static renderCourseOptions() {
     // Get courses data from local storage.
-    const coursesData = JSON.parse(localStorage.getItem('courses')) || [];
+    const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
 
     // Select all student dropdowns
-    const courseInputs = document.querySelectorAll('.form__select');
+    const courseInputs = document.querySelectorAll(".form__select");
 
     // Get the selected values across all dropdowns.
     const selectedValues = Array.from(courseInputs)
       .map((select) => select.value)
-      .filter((value) => value !== '');
+      .filter((value) => value !== "");
 
     // Loop through each dropdown.
     courseInputs.forEach((element) => {
       // Get the current value from the selected courses array.
       const currentValue = element.value;
-      element.innerHTML = '';
+      element.innerHTML = "";
 
       // Create a default option.
-      const defaultOption = document.createElement('option');
-      defaultOption.value = '';
-      defaultOption.innerText = 'Select Course';
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.innerText = "Select Course";
       element.append(defaultOption);
 
       // Loop through each course.
@@ -477,7 +477,7 @@ class Ui {
         }
 
         // Create an option element.
-        const option = document.createElement('option');
+        const option = document.createElement("option");
         option.value = course.code;
         option.innerText = course.name;
         option.dataset.id = course.id;

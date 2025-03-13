@@ -17,13 +17,13 @@
   justify-self: end;
 }
 
-.panel__button{
+.panel__button {
   font-size: 18px;
   font-weight: 700;
   border: 0.5px solid black;
   background-color: var(--color-navButton);
 }
-.panel__button:hover{
+.panel__button:hover {
   background-color: var(--color-navButton-hover);
   transition: color 0.3s;
 }
