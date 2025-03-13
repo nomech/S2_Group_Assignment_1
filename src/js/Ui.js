@@ -1,4 +1,6 @@
 import CourseManager from "./courseManager";
+// import deleteIcon from ".../src/assets/svg/delete-svgrepo-com.svg";
+// import editIcon from "../assets/svg/edit-fill1480-svgrepo-com.svg";
 
 class Ui {
   // Render the page: clear previous content, create a panel, and render stored data.
@@ -74,7 +76,17 @@ class Ui {
       const cardTitle = document.createElement("h3");
       const cardContent = document.createElement("div");
       const deleteButton = document.createElement("button");
-      const editButton = document.createElement("button");
+      const editButton = document.createElement("button") ;
+      
+      const deleteBilde = document.createElement("img")
+      deleteBilde.src = "../assets/svg/delete-svgrepo-com.svg"
+      deleteButton.append(deleteBilde)
+      console.log(deleteButton);
+      
+
+      const editBilde = document.createElement("img")
+      editBilde.src = "../assets/svg/edit-fill1480-svgrepo-com.svg"
+      editButton.append(editBilde)
 
       // Add classes.
       card.classList.add("card");
@@ -90,6 +102,7 @@ class Ui {
         const phone = document.createElement("p");
         const address = document.createElement("p");
         const enrolledCourses = document.createElement("p");
+        enrolledCourses.classlist.add("buttonsClass")
         const buttonGroup = document.createElement("div");
 
         // Set text content and classes.
@@ -103,6 +116,7 @@ class Ui {
         deleteButton.classList.add("button", "card__delete");
         editButton.classList.add("button", "card__edit");
         buttonGroup.classList.add("card__button-group");
+        
 
         // Set text content and data attributes.
         editButton.textContent = "Edit";
