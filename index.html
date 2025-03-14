@@ -14,35 +14,39 @@
   <link rel="stylesheet" href="./src/css/panel.css">
   <link rel="stylesheet" href="./src/css/formModal.css">
   <link rel="stylesheet" href="./src/css/card.css">
+  <link rel="stylesheet" href="./src/css/errorModal.css">
+  <link rel="stylesheet" href="./src/css/confirmModal.css">
 
   <title>Vite App</title>
 </head>
 
 <body>
   <header>
+    <!-- Navbar -->
     <nav class="nav">
-      <button class="nav-button button button--students" data-id="students">Students <img src="./src/assets/svg/person-button-svgrepo-com.svg" alt="Person svg"></button>
-      <button class="nav-button button button--courses" data-id="courses">Courses <img src="./src/assets/svg/copy-course-svgrepo-com.svg" alt="course svg"></button>
-      <button class="nav-button button button--instructors" data-id="instructors">Instructors <img src="./src/assets/svg/person-button-svgrepo-com.svg" alt="Person svg"></button>
+      <button class="nav-button button button--students" data-id="students">Students</button>
+      <button class="nav-button button button--courses" data-id="courses">Courses</button>
+      <button class="nav-button button button--instructors" data-id="instructors">Instructors</button>
     </nav>
   </header>
+
   <main>
-    <section class="panel">
-
-    </section>
-    <section class="data">
-
-    </section>
-
+    <section class="panel"> <!-- Panel data (Panel title and buttons) --></section>
+    <section class="data"> <!-- Data goes here --> </section>
   </main>
+
+  <!-- Footer -->
   <footer>
 
   </footer>
 
+  <!-- Form Modals -->
   <div class="form-modal form-modal__students" data-id="students">
+
+    <!-- Student form -->
     <form class="form-modal__form form form--students">
       <div class="form-modal__close">
-        X
+        <img class="form-modal__close-icon" src="./src/assets/icons/xmark-solid.svg" alt="Close" />
       </div>
       <h3 class="form-modal__heading">Add a new student</h3>
       <div class="form__element">
@@ -54,14 +58,14 @@
       </div>
       <div class="form__element">
         <input class="form__input form__input--student-phone" type="tel" id="phone" name="phone" placeholder="Phone"
-          required />
+           />
       </div>
       <div class="form__element">
         <input class="form__input form__input--student-address" type="text" id="address" name="address"
-          placeholder="Address" required />
+          placeholder="Address" />
       </div>
       <div class="form__element form__courses">
-        <h3 >Select courses you want to enroll in</h3>
+        <h3>Select courses you want to enroll in</h3>
         <select class="form__input form__select form__select--student" name="course" id="course">
           <option value="">Select Course</option>
 
@@ -75,14 +79,14 @@
 
         </select>
       </div>
-      <button class="button form__button button">Add</button>
+      <button class="button form__button button">Add students</button>
     </form>
   </div>
 
   <div class="form-modal form-modal__courses" data-id="courses">
     <form class="form-modal__form form form--courses" data-id="courses">
       <div class="form-modal__close">
-        X
+        <img class="form-modal__close-icon" src="./src/assets/icons/xmark-solid.svg" alt="Close" />
       </div>
       <h3 class="form-modal__heading">Add a new course</h3>
       <div class="form__element">
@@ -93,7 +97,7 @@
       </div>
       <div class="form__element">
         <input class="form__input form__input--course-credit" type="number" id="credit" name="credit"
-          placeholder="Credit" required />
+          placeholder="Credit" />
       </div>
       <button class="button form__button button">Add</button>
     </form>
@@ -102,7 +106,7 @@
   <div class="form-modal form-modal__instructors" data-id="instructors">
     <form class="form-modal__form form form--instructors">
       <div class="form-modal__close">
-        X
+        <img class="form-modal__close-icon" src="./src/assets/icons/xmark-solid.svg" alt="Close" />
       </div>
       <h3 class="form-modal__heading">Add a new instructor</h3>
       <div class="form__element">
@@ -114,11 +118,11 @@
       </div>
       <div class="form__element">
         <input class="form__input form__input--instructor-phone" type="tel" id="phone" name="phone" placeholder="Phone"
-          required />
+           />
       </div>
       <div class="form__element">
         <input class="form__input form__input--instructor-address" type="text" id="address" name="address"
-          placeholder="Address" required />
+          placeholder="Address"  />
       </div>
       <div class="form__element form__courses">
         <h3>Select courses you want to enroll in</h3>
@@ -147,7 +151,22 @@
     </form>
   </div>
 
+  <!-- error modal -->
+  <div class="error-modal">
+    <div class="error-modal-content">
+      <p class="error-modal-message"></p>
+    </div>
   </div>
+
+  <!-- Confirmation Modal -->
+  <div class="confirm-modal">
+    <div class="confirm-modal__content">
+      <p>Are you sure you want to delete?</p>
+      <button class="button button__confirm">Yes, delete</button>
+      <button class="button button__no" id="confirm-no">Cancel</button>
+    </div>
+  </div>
+
   <script type="module" src="/src/js/app.js"></script>
 </body>
 
