@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="./src/css/formModal.css">
   <link rel="stylesheet" href="./src/css/card.css">
   <link rel="stylesheet" href="./src/css/errorModal.css">
+  <link rel="stylesheet" href="./src/css/confirmModal.css">
 
   <title>Vite App</title>
 </head>
@@ -62,7 +63,7 @@
           placeholder="Address" required />
       </div>
       <div class="form__element form__courses">
-        <h3 >Select courses you want to enroll in</h3>
+        <h3>Select courses you want to enroll in</h3>
         <select class="form__input form__select form__select--student" name="course" id="course">
           <option value="">Select Course</option>
 
@@ -148,9 +149,19 @@
     </form>
   </div>
 
+  <!-- error modal -->
   <div class="error-modal">
     <div class="error-modal-content">
       <p>This course code has already been used!</p>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="confirm-modal">
+    <div class="confirm-modal__content">
+      <p>Are you sure you want to delete?</p>
+      <button class="button button__confirm">Yes, delete</button>
+      <button class="button button__no" id="confirm-no">Cancel</button>
     </div>
   </div>
 

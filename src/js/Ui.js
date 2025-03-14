@@ -119,7 +119,9 @@ class Ui {
 
         // Delete student event.
         deleteButton.addEventListener("click", () => {
-          CourseManager.deleteStudent(item.id, "students");
+          Ui.promptDeleteConfirmation(() => {
+            CourseManager.deleteStudent(item.id, "students");
+          });
         });
 
         // Edit student event: pre-fill the form for editing.
@@ -203,8 +205,9 @@ class Ui {
 
         // Add event listeners for delete and edit buttons.
         deleteButton.addEventListener("click", () => {
-          // Delete the instructor.
-          CourseManager.deleteInstructor(item.id, "instructors");
+          Ui.promptDeleteConfirmation(() => {
+            CourseManager.deleteInstructor(item.id, "instructors");
+          });
         });
 
         editButton.addEventListener("click", () => {
@@ -314,7 +317,9 @@ class Ui {
 
         // Add event listeners for delete and edit buttons.
         deleteButton.addEventListener("click", () => {
-          CourseManager.deleteCourses(item.id);
+          Ui.promptDeleteConfirmation(() => {
+            CourseManager.deleteCourses(item.id, "courses");
+          });
         });
 
         // Edit course event.
@@ -413,11 +418,10 @@ class Ui {
 
     // Loop through each dropdown.
     courseInputs.forEach((element) => {
-
       // Get the current value from the selected courses array.
       const currentValue = element.value;
       element.innerHTML = "";
-      
+
       // Create a default option.
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
@@ -602,6 +606,37 @@ class Ui {
       // Restore the current selection.
       select.value = currentValue;
     });
+  }
+
+  // New method to handle delete confirmation using descriptive names
+  static promptDeleteConfirmation(deleteAction) {
+    const confirmModal = document.querySelector(".confirm-modal");
+    const confirmButton = document.querySelector(".button__confirm");
+    const cancelButton = document.querySelector(".button__no");
+
+    // Display the confirmation modal.
+    confirmModal.style.display = "flex";
+
+    // Handler for confirming the deletion.
+    const handleConfirmDeletion = () => {
+      deleteAction(); // Execute the deletion action.
+      resetConfirmationModal();
+    };
+
+    // Handler for canceling the deletion.
+    const handleCancelDeletion = () => {
+      resetConfirmationModal();
+    };
+
+    // Reset the modal by hiding it and removing event listeners.
+    function resetConfirmationModal() {
+      confirmModal.style.display = "none";
+      confirmButton.removeEventListener("click", handleConfirmDeletion);
+      cancelButton.removeEventListener("click", handleCancelDeletion);
+    }
+
+    confirmButton.addEventListener("click", handleConfirmDeletion);
+    cancelButton.addEventListener("click", handleCancelDeletion);
   }
 }
 
