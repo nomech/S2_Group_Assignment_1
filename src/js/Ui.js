@@ -1,4 +1,15 @@
 import CourseManager from "./courseManager";
+import edit from "../assets/icons/edit.svg";
+import deleteIconSvg from "../assets/icons/delete.svg";
+import addressIconSvg from "../assets/icons/address.svg";
+import emailIconSvg from "../assets/icons/email.svg";
+import phoneIconSvg from "../assets/icons/phone.svg";
+import coursesSvg from "../assets/icons/courses.svg";
+import addIcon from "../assets/icons/add.svg";
+import star from "../assets/icons/star.svg";
+import tag from "../assets/icons/tag.svg";
+import instructorIconSvg from "../assets/icons/instructor.svg";
+import studentIconSvg from "../assets/icons/users.svg";
 
 class Ui {
   // Render the page: clear previous content, create a panel, and render stored data.
@@ -93,7 +104,9 @@ class Ui {
       const cardTitle = document.createElement("h3");
       const cardContent = document.createElement("div");
       const deleteButton = document.createElement("button");
+      const deleteIcon = document.createElement("img");
       const editButton = document.createElement("button");
+      const editIcon = document.createElement("img");
 
       // Add classes.
       card.classList.add("card");
@@ -127,7 +140,12 @@ class Ui {
         const phone = document.createElement("p");
         const address = document.createElement("p");
         const enrolledCourses = document.createElement("p");
-        const buttonGroup = document.createElement("div");
+
+        // Create icon elements.
+        const emailIcon = document.createElement("img");
+        const phoneIcon = document.createElement("img");
+        const addressIcon = document.createElement("img");
+        const coursesIcon = document.createElement("img");
 
         // Set text content and classes.
         cardTitle.textContent = item.name;
