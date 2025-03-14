@@ -39,17 +39,3 @@
   width: 20px;
   height: 20px;
 }
-
-
-@media (max-width: 768px) {
-  .panel__button {
-     font-size: 14px;
-  }
-}
-
-
-@media (max-width: 595px) {
-  .panel__add-text{
-     display: none;
-  }
-}
