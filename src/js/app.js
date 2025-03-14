@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Validate course form.
   function validateCourseForm() {
-    const storedCourses = JSON.parse(localStorage.getItem("courses"));
+    const storedCourses = JSON.parse(localStorage.getItem("courses")) || [];
     console.log(storedCourses);
     const findCode = storedCourses.find((course) => {
       return course.code === courseCode.value;
