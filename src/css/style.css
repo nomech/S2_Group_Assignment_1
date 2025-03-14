@@ -15,3 +15,20 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
 }
+
+@media (max-width: 595px) {
+  main {
+    padding: var(--xlarge) 10px;
+  }
+  .data--students,
+  .data--instructors {
+    grid-template-columns: repeat(auto-fit, minmax(435px, 1fr));
+  }
+}
+
+@media (max-width: 375px) {
+  .data--students,
+  .data--instructors {
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  }
+}

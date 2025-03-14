@@ -1,13 +1,14 @@
 :root {
   /* Colors */
   --color-primary: #718f94; /* Light blue */
-  --color-editButton: #95ABAF;
-  
-  --color-removeButton: #E24559;
-  --color-removeButton-hover: #DB162F;
+  --color-secondary: #3e4d50; /* Dark blue */
+  --color-editButton: #95abaf;
 
-  --color-navButton: #E4E6E3;
-  --color-navButton-hover: #C2C4C1;
+  --color-removeButton: #e24559;
+  --color-removeButton-hover: #db162f;
+
+  --color-navButton: #e4e6e3;
+  --color-navButton-hover: #c2c4c1;
 
   --color-edit-button: #FFCD33;
   --color-edit-button-hover: #FFC30D;

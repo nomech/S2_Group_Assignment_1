@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,33 +17,49 @@
   <link rel="stylesheet" href="./src/css/errorModal.css">
   <link rel="stylesheet" href="./src/css/confirmModal.css">
 
-  <title>Vite App</title>
+  <title>Course Manager</title>
 </head>
 
 <body>
   <header>
     <!-- Navbar -->
+    <div class="title">
+      <h1>Course Manager</h1>
+    </div>
     <nav class="nav">
       <!-- Nav buttons-->
-      <button class="nav-button button button--students" data-id="students"> <img class="nav-button__icon" src="./src/assets/icons/users.svg" alt="students icon">Students</button>
-      <button class="nav-button button button--courses" data-id="courses"> <img class="nav-button__icon" src="./src/assets/icons/courses.svg" alt="Courses icon">Courses</button>
-      <button class="nav-button button button--instructors" data-id="instructors"> <img class="nav-button__icon" src="./src/assets/icons/instructor.svg" alt="Courses icon">Instructors</button>
+      <button class="nav-button button button--students" data-id="students">
+        <img class="nav-button__icon" src="./src/assets/icons/users.svg" alt="students icon" />Students
+      </button>
+      <button class="nav-button button button--courses" data-id="courses">
+        <img class="nav-button__icon" src="./src/assets/icons/courses.svg" alt="Courses icon" />Courses
+      </button>
+      <button class="nav-button button button--instructors" data-id="instructors">
+        <img class="nav-button__icon" src="./src/assets/icons/instructor.svg" alt="Courses icon" />Instructors
+      </button>
     </nav>
   </header>
 
   <main>
-    <section class="panel"> <!-- Panel data (Panel title and buttons) --></section>
-    <section class="data"> <!-- Data goes here --> </section>
+    <!-- Welcome message -->
+    <div class="welcome-message">
+      <h2>Welcome to Course Manager! 🎓</h2>
+      <p>
+        Effortlessly manage courses, students, and instructors all in one
+        place. Add, edit, and organize with ease—streamlining your academic
+        workflow. 🚀📚
+      </p>
+    </div>
+
+    <section class="panel">
+      <!-- Panel data (Panel title and buttons) -->
+    </section>
+    <section class="data"><!-- Data goes here --></section>
   </main>
 
-  <!-- Footer -->
-  <footer>
-
-  </footer>
 
   <!-- Form Modals -->
   <div class="form-modal form-modal__students" data-id="students">
-
     <!-- Student form -->
     <form class="form-modal__form form form--students">
       <div class="form-modal__close">
@@ -58,8 +74,7 @@
           placeholder="Email" />
       </div>
       <div class="form__element">
-        <input class="form__input form__input--student-phone" type="tel" id="phone" name="phone" placeholder="Phone"
-           />
+        <input class="form__input form__input--student-phone" type="tel" id="phone" name="phone" placeholder="Phone" />
       </div>
       <div class="form__element">
         <input class="form__input form__input--student-address" type="text" id="address" name="address"
@@ -69,15 +84,14 @@
         <h3>Select courses you want to enroll in</h3>
         <select class="form__input form__select form__select--student" name="course" id="course">
           <option value="">Select Course</option>
-
         </select>
         <select class="form__input form__select form__select--student" name="course" id="course">
-          <option class="form__option" value="">Select Course</option>
-
+          <option class="form__option" value="">
+            Select Course
+          </option>
         </select>
         <select class="form__input form__select form__select--student" name="course" id="course">
           <option value="">Select Course</option>
-
         </select>
       </div>
       <button class="button form__button button">Add students</button>
@@ -118,12 +132,12 @@
           placeholder="Email" />
       </div>
       <div class="form__element">
-        <input class="form__input form__input--instructor-phone" type="tel" id="phone" name="phone" placeholder="Phone"
-           />
+        <input class="form__input form__input--instructor-phone" type="tel" id="phone" name="phone"
+          placeholder="Phone" />
       </div>
       <div class="form__element">
         <input class="form__input form__input--instructor-address" type="text" id="address" name="address"
-          placeholder="Address"  />
+          placeholder="Address" />
       </div>
       <div class="form__element form__courses">
         <h3>Select courses you want to enroll in</h3>
@@ -132,21 +146,19 @@
         </select>
         <select class="form__input form__select form__select--instructor" name="course" id="course">
           <option value="">Assign a course</option>
-
         </select>
         <select class="form__input form__select form__select--instructor" name="course" id="course">
           <option value="">Assign a course</option>
         </select>
         <select class="form__input form__select form__select--instructor" name="course" id="course">
           <option value="">Assign a course</option>
-
         </select>
         <select class="form__input form__select form__select--instructor" name="course" id="course">
           <option value="">Assign a course</option>
-
         </select>
       </div>
-      <div class="form__element form-error"></div> <!-- Error message container -->
+      <div class="form__element form-error"></div>
+      <!-- Error message container -->
 
       <button class="button form__button">Add</button>
     </form>
@@ -163,13 +175,16 @@
   <div class="confirm-modal">
     <div class="confirm-modal__content">
       <p>Are you sure you want to delete?</p>
-      <button class="button button__confirm">Yes, delete </button>
-      <button class="button button__no" id="confirm-no">Cancel</button>
+
+      <button class="button button__confirm">Yes, delete</button>
+      <button class="button button__no">
+        Cancel
+      </button>
+
     </div>
   </div>
 
   <script type="module" src="/src/js/app.js"></script>
 </body>
-
 
 </html>
