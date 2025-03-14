@@ -15,3 +15,15 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
 }
+
+.welcome-message {
+  display: block;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+  margin-bottom: 50px;
+  text-align: center;
+}

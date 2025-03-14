@@ -96,6 +96,15 @@ class Ui {
     // Select the data container.
     const dataContainer = document.querySelector(".data");
 
+    // Show and hide welcome message
+    const welcomeText = document.querySelector(".welcome-message");
+
+    if (data.length === 0) {
+      welcomeText.style.display = "block";
+    } else {
+      welcomeText.style.display = "none";
+    }
+
     // Render the data cards.
     data.forEach((item) => {
       // Create card elements.
@@ -522,6 +531,12 @@ class Ui {
     // Select the data container.
     const data = document.querySelector(".data");
     data.innerHTML = "";
+
+    // Make sure the welcome message is inside main when empty page
+    const welcomeText = document.querySelector(".welcome-message");
+    if (welcomeText) {
+      document.querySelector("main").prepend(welcomeText);
+    }
   }
 
   // Add the show class to the modal if the data-id matches.
