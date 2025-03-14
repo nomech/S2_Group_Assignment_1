@@ -27,3 +27,15 @@
   background-color: var(--color-navButton-hover);
   transition: color 0.3s;
 }
+
+.panel__add{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--small)
+}
+
+.panel__add-icon {
+  width: 20px;
+  height: 20px;
+}

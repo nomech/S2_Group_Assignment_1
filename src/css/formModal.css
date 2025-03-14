@@ -51,6 +51,15 @@
   border: 2px solid var(--color-primary);
 }
 
+.form__button{
+  display: flex;
+  justify-content: center;
+}
+.form-button__icon {
+  height: 24px;
+  width: 24px;
+}
+
 .form-modal__close:hover {
   transition: color 0.3s;
   border: 2px solid #ffffff;

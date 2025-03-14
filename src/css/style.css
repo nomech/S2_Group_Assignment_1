@@ -4,6 +4,14 @@ main {
 
 .data {
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 2rem;
+}
+
+.data--students,
+.data--instructors {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
 }
