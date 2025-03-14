@@ -18,28 +18,28 @@ const studentEmail = document.querySelector(".form__input--student-email");
 const studentPhone = document.querySelector(".form__input--student-phone");
 const studentAddress = document.querySelector(".form__input--student-address");
 const studentEnrolledCourses = document.querySelectorAll(
-  ".form__select--student",
+  ".form__select--student"
 );
 
 // Instructor form elements
 const instructorForm = document.querySelector(".form--instructors");
 const instructorName = document.querySelector(".form__input--instructor-name");
 const instructorEmail = document.querySelector(
-  ".form__input--instructor-email",
+  ".form__input--instructor-email"
 );
 const instructorPhone = document.querySelector(
-  ".form__input--instructor-phone",
+  ".form__input--instructor-phone"
 );
 const instructorAddress = document.querySelector(
-  ".form__input--instructor-address",
+  ".form__input--instructor-address"
 );
 const instructorAssignedCourses = document.querySelectorAll(
-  ".form__select--instructor",
+  ".form__select--instructor"
 );
 
 document.addEventListener("DOMContentLoaded", () => {
   navButtons.forEach((button) => {
-    button.addEventListener("click", function (event) {
+    button.addEventListener("click", (event) => {
       Ui.renderPage(event.target.dataset.id);
     });
   });
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
           // Display error modal if the course is already assigned to an instructor.
           showErrorModal(
-            `Course "${course.name}" already has an instructor. Please select another course.`,
+            `Course "${course.name}" already has an instructor. Please select another course.`
           );
           return false;
         }
