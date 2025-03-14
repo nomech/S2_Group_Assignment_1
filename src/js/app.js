@@ -18,23 +18,23 @@ const studentEmail = document.querySelector(".form__input--student-email");
 const studentPhone = document.querySelector(".form__input--student-phone");
 const studentAddress = document.querySelector(".form__input--student-address");
 const studentEnrolledCourses = document.querySelectorAll(
-  ".form__select--student"
+  ".form__select--student",
 );
 
 // Instructor form elements
 const instructorForm = document.querySelector(".form--instructors");
 const instructorName = document.querySelector(".form__input--instructor-name");
 const instructorEmail = document.querySelector(
-  ".form__input--instructor-email"
+  ".form__input--instructor-email",
 );
 const instructorPhone = document.querySelector(
-  ".form__input--instructor-phone"
+  ".form__input--instructor-phone",
 );
 const instructorAddress = document.querySelector(
-  ".form__input--instructor-address"
+  ".form__input--instructor-address",
 );
 const instructorAssignedCourses = document.querySelectorAll(
-  ".form__select--instructor"
+  ".form__select--instructor",
 );
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -60,7 +60,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Validate course form.
   function validateCourseForm() {
-    return courseName.value && courseCode.value && courseCredit.value;
+    const storedCourses = JSON.parse(localStorage.getItem("courses"));
+    console.log(storedCourses);
+    const findCode = storedCourses.find((course) => {
+      return course.code === courseCode.value;
+    });
+
+    if (findCode) {
+      showErrorModal();
+      return;
+    } else {
+      return courseName.value && courseCode.value && courseCredit.value;
+    }
+  }
+
+  // Function to display course code error modal
+  function showErrorModal() {
+    const errorModal = document.querySelector(".error-modal");
+
+    errorModal.style.display = "block";
+
+    setTimeout(() => {
+      errorModal.style.display = "none";
+    }, 3000);
   }
 
   // Course form submission.
@@ -169,9 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let courseCode of assignedCourses) {
         const course = coursesData.find((course) => course.code === courseCode);
         if (course && course.instructor && course.instructor.id) {
-
           // If we're editing and the course is already assigned to the current instructor, skip it.
-          if (currentInstructorId && course.instructor.id === currentInstructorId) {
+          if (
+            currentInstructorId &&
+            course.instructor.id === currentInstructorId
+          ) {
             continue;
           }
 

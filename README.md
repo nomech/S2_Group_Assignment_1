@@ -15,4 +15,3 @@ This project implements an object-oriented **Student Course Management System** 
 - Christoffer Mellem
 - Eivind Siegel Haukeberg
 - Anna Line Inderhaug Røed
-- Filip Valderhaug
