@@ -63,6 +63,15 @@ class Ui {
     // Open the form when the add button is clicked.
     addButton.addEventListener("click", () => {
       Ui.openForm(form, id);
+
+      // 🔹 Reset form header and button when opening "Add" for Courses, Students, and Instructors
+      const formHeader = form.querySelector(".form-modal__heading");
+      const formButton = form.querySelector(".form__button");
+
+      formHeader.textContent = `Add ${id}`;
+      formButton.textContent = `Add ${id}`;
+      formButton.dataset.action = "add";
+
       // Render course options.
       if (id === "students") {
         Ui.renderCourseOptions();
@@ -157,7 +166,7 @@ class Ui {
         coursesIcon.classList.add("card__icon");
         enrolledCoursesGroup.classList.add(
           "card__group",
-          "card__group--courses"
+          "card__group--courses",
         );
         buttonGroup.classList.add("card__button-group");
 
@@ -181,7 +190,7 @@ class Ui {
           emailGroup,
           phoneGroup,
           addressGroup,
-          enrolledCoursesGroup
+          enrolledCoursesGroup,
         );
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
@@ -276,7 +285,7 @@ class Ui {
         coursesIcon.classList.add("card__icon");
         assignedCoursesGroup.classList.add(
           "card__group",
-          "card__group--courses"
+          "card__group--courses",
         );
         buttonGroup.classList.add("card__button-group");
 
@@ -300,7 +309,7 @@ class Ui {
           emailGroup,
           phoneGroup,
           addressGroup,
-          assignedCoursesGroup
+          assignedCoursesGroup,
         );
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
@@ -440,7 +449,7 @@ class Ui {
           instructorGroup,
           codeGroup,
           creditGroup,
-          studentsGroup
+          studentsGroup,
         );
 
         // Add buttons to the card.
