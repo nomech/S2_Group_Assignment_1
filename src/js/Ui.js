@@ -382,6 +382,7 @@ class Ui {
         creditGroup.classList.add("card__group");
         instructorGroup.classList.add("card__group");
         studentsGroup.classList.add("card__group", "card__group--students");
+        studentsListGroup.classList.add("card__list-container");
         tagIcon.classList.add("card__icon");
         starIcon.classList.add("card__icon");
         studentsIcon.classList.add("card__icon");
