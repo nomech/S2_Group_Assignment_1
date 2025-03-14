@@ -1,5 +1,6 @@
 import CourseManager from "./courseManager";
-
+import edit from "../assets/icons/edit.svg";
+import deleteIconSvg from "../assets/icons/delete.svg";
 class Ui {
   // Render the page: clear previous content, create a panel, and render stored data.
   static renderPage(id) {
@@ -74,16 +75,27 @@ class Ui {
       const cardTitle = document.createElement("h3");
       const cardContent = document.createElement("div");
       const deleteButton = document.createElement("button");
+      const deleteIcon = document.createElement("img");
       const editButton = document.createElement("button");
+      const editIcon = document.createElement("img");
 
       // Add classes.
       card.classList.add("card");
       cardTitle.classList.add("data__title");
       cardContent.classList.add("card__item");
+      deleteButton.classList.add("button", "card__delete");
+      editButton.classList.add("button", "card__edit");
+      deleteIcon.classList.add("card__edit-icon");
+      editIcon.classList.add("card__delete-icon");
+
+      editIcon.src = edit;
+      editButton.append(editIcon, `Edit`);
+
+      deleteIcon.src = deleteIconSvg;
+      deleteButton.append(deleteIcon, `Delete`);
 
       // Set data attributes.
       card.dataset.id = item.id;
-
       if (item.type === "student") {
         // Create student card elements.
         const email = document.createElement("p");
@@ -100,19 +112,13 @@ class Ui {
         enrolledCourses.textContent = `Enrolled Courses: ${item.enrolledCourses}`;
 
         // Append elements to the card.
-        deleteButton.classList.add("button", "card__delete");
-        editButton.classList.add("button", "card__edit");
-        buttonGroup.classList.add("card__button-group");
 
-        // Set text content and data attributes.
-        editButton.textContent = "Edit";
-        deleteButton.textContent = "Delete";
+        buttonGroup.classList.add("card__button-group");
 
         // Set data attributes.
         editButton.dataset.id = item.id;
         deleteButton.dataset.id = item.id;
 
-        // Append elements to the card.
         cardContent.append(email, phone, address, enrolledCourses);
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
@@ -185,15 +191,6 @@ class Ui {
 
         // Append elements to the card.
         cardContent.append(email, phone, address, assignedCourses);
-
-        // Set text content for buttons.
-        deleteButton.textContent = "Delete";
-        editButton.textContent = "Edit";
-
-        // Add classes for buttons.
-        buttonGroup.classList.add("card__button-group");
-        deleteButton.classList.add("button", "card__delete");
-        editButton.classList.add("button", "card__edit");
 
         // Set data attributes for buttons.
         deleteButton.dataset.id = item.id;
@@ -300,12 +297,6 @@ class Ui {
 
         // Add classes to the button group and buttons.
         buttonGroup.classList.add("card__button-group");
-        editButton.classList.add("button", "card__edit");
-        deleteButton.classList.add("button", "card__delete");
-
-        // Set text content
-        editButton.textContent = "Edit";
-        deleteButton.textContent = "Delete";
 
         // Set data attributes.
         editButton.dataset.id = item.id;
@@ -635,6 +626,7 @@ class Ui {
       cancelButton.removeEventListener("click", handleCancelDeletion);
     }
 
+    // Add event listeners to the confirm and cancel buttons.
     confirmButton.addEventListener("click", handleConfirmDeletion);
     cancelButton.addEventListener("click", handleCancelDeletion);
   }

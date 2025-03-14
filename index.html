@@ -22,29 +22,32 @@
 
 <body>
   <header>
+    <!-- Navbar -->
     <nav class="nav">
+      <!-- Nav buttons-->
       <button class="nav-button button button--students" data-id="students">Students</button>
       <button class="nav-button button button--courses" data-id="courses">Courses</button>
       <button class="nav-button button button--instructors" data-id="instructors">Instructors</button>
     </nav>
   </header>
+
   <main>
-    <section class="panel">
-
-    </section>
-    <section class="data">
-
-    </section>
-
+    <section class="panel"> <!-- Panel data (Panel title and buttons) --></section>
+    <section class="data"> <!-- Data goes here --> </section>
   </main>
+
+  <!-- Footer -->
   <footer>
 
   </footer>
 
+  <!-- Form Modals -->
   <div class="form-modal form-modal__students" data-id="students">
+
+    <!-- Student form -->
     <form class="form-modal__form form form--students">
       <div class="form-modal__close">
-        X
+        <img class="form-modal__close-icon" src="./src/assets/icons/xmark-solid.svg" alt="Close" />
       </div>
       <h3 class="form-modal__heading">Add a new student</h3>
       <div class="form__element">
@@ -84,7 +87,7 @@
   <div class="form-modal form-modal__courses" data-id="courses">
     <form class="form-modal__form form form--courses" data-id="courses">
       <div class="form-modal__close">
-        X
+        <img class="form-modal__close-icon" src="./src/assets/icons/xmark-solid.svg" alt="Close" />
       </div>
       <h3 class="form-modal__heading">Add a new course</h3>
       <div class="form__element">
@@ -104,7 +107,7 @@
   <div class="form-modal form-modal__instructors" data-id="instructors">
     <form class="form-modal__form form form--instructors">
       <div class="form-modal__close">
-        X
+        <img class="form-modal__close-icon" src="./src/assets/icons/xmark-solid.svg" alt="Close" />
       </div>
       <h3 class="form-modal__heading">Add a new instructor</h3>
       <div class="form__element">
