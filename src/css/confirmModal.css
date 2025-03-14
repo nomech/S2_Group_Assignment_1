@@ -9,11 +9,53 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  animation: fadeInAnimation ease 0.3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+  }
+  
+  100% {
+    opacity: 1;
+  }
+  }
+
 
 .confirm-modal__content {
-  background: #fff;
+  background: var(--color-primary);
+  border: 0.5px solid black;
   padding: 20px;
   border-radius: 5px;
   text-align: center;
+  font-weight: 500;
+  font-size: 1.125rem;
 }
+
+.button__confirm {
+  margin-top: 0.5rem;
+  background-color: var(--color-removeButton);
+  border: 0.5px solid black;
+  font-weight: 500;
+  font-size: 1rem;
+}
+.button__confirm:hover {
+  transition: color 0.3s;
+  background-color: var(--color-removeButton-hover);
+}
+
+.button__no {
+  margin-top: 0.5rem;
+  background-color: var(--color-navButton);
+  border: 0.5px solid black;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.button__no:hover {
+  transition: color 0.3s;
+  background-color: var(--color-navButton-hover);
+}
+

@@ -178,6 +178,7 @@ class Ui {
           "card__group--courses",
         );
         buttonGroup.classList.add("card__button-group");
+        
 
         // Set icons
         emailIcon.src = emailIconSvg;

@@ -17,9 +17,10 @@
   background-color: var(--color-editButton);
   border: 0.5px solid black;
   font-size: 18px;
+  width: fit-content;
 }
 .card__edit:hover {
-  background-color: var(--color-primary);
+  background-color: var(--color-edit-button-hover);
   transition: color 0.3s;
 }
 
@@ -33,6 +34,7 @@
   transition: color 0.3s;
 }
 
+
 @media (max-width: 768px) {
   .button {
     padding: var(--xsmall) var(--small);
@@ -45,3 +47,4 @@
     padding: var(--xsmall) var(--xsmall);
   }
 }
+
