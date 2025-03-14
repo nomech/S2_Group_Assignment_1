@@ -1,4 +1,15 @@
 import CourseManager from "./courseManager";
+import edit from "../assets/icons/edit.svg";
+import deleteIconSvg from "../assets/icons/delete.svg";
+import addressIconSvg from "../assets/icons/address.svg";
+import emailIconSvg from "../assets/icons/email.svg";
+import phoneIconSvg from "../assets/icons/phone.svg";
+import coursesSvg from "../assets/icons/courses.svg";
+import addIcon from "../assets/icons/add.svg";
+import star from "../assets/icons/star.svg";
+import tag from "../assets/icons/tag.svg";
+import instructorIconSvg from "../assets/icons/instructor.svg";
+import studentIconSvg from "../assets/icons/users.svg";
 
 class Ui {
   // Render the page: clear previous content, create a panel, and render stored data.
@@ -17,17 +28,26 @@ class Ui {
     // Create the panel title and add button.
     const title = document.createElement("h2");
     const addButton = document.createElement("button");
+    const addButtonText = document.createElement("p");
+    const addIconElement = document.createElement("img");
 
     // Add classes
     title.classList.add("panel__title");
     addButton.classList.add("panel__add", "button", "panel__button");
+    addButtonText.classList.add("panel__add-text");
+    addIconElement.classList.add("panel__add-icon");
 
     // Set text content
     title.textContent = id;
-    addButton.textContent = `add ${id}`;
+    addButtonText.textContent = `add ${id}`;
+
+    //Add icon
+    addIconElement.src = addIcon;
 
     // Set data attributes.
     addButton.dataset.id = id;
+
+    addButton.append(addIconElement, addButtonText);
 
     // Append elements to the panel.
     panel.append(title, addButton);
@@ -70,27 +90,53 @@ class Ui {
     // Render the data cards.
     data.forEach((item) => {
       // Create card elements.
+      const dataContainer = document.querySelector(".data");
       const card = document.createElement("div");
       const cardTitle = document.createElement("h3");
       const cardContent = document.createElement("div");
       const deleteButton = document.createElement("button");
+      const deleteIcon = document.createElement("img");
       const editButton = document.createElement("button");
+      const editIcon = document.createElement("img");
 
       // Add classes.
       card.classList.add("card");
       cardTitle.classList.add("data__title");
       cardContent.classList.add("card__item");
+      deleteButton.classList.add("button", "card__delete");
+      editButton.classList.add("button", "card__edit");
+      deleteIcon.classList.add("card__edit-icon");
+      editIcon.classList.add("card__delete-icon");
+
+      editIcon.src = edit;
+      editButton.append(editIcon, `Edit`);
+
+      deleteIcon.src = deleteIconSvg;
+      deleteButton.append(deleteIcon, `Delete`);
 
       // Set data attributes.
       card.dataset.id = item.id;
-
       if (item.type === "student") {
         // Create student card elements.
+
+        // Create group elements.
+        const emailGroup = document.createElement("div");
+        const phoneGroup = document.createElement("div");
+        const addressGroup = document.createElement("div");
+        const enrolledCoursesGroup = document.createElement("div");
+        const buttonGroup = document.createElement("div");
+
+        // Create text elements.
         const email = document.createElement("p");
         const phone = document.createElement("p");
         const address = document.createElement("p");
         const enrolledCourses = document.createElement("p");
-        const buttonGroup = document.createElement("div");
+
+        // Create icon elements.
+        const emailIcon = document.createElement("img");
+        const phoneIcon = document.createElement("img");
+        const addressIcon = document.createElement("img");
+        const coursesIcon = document.createElement("img");
 
         // Set text content and classes.
         cardTitle.textContent = item.name;
@@ -99,27 +145,52 @@ class Ui {
         address.textContent = item.address;
         enrolledCourses.textContent = `Enrolled Courses: ${item.enrolledCourses}`;
 
-        // Append elements to the card.
-        deleteButton.classList.add("button", "card__delete");
-        editButton.classList.add("button", "card__edit");
+        // Add classes
+        dataContainer.classList.add("data--students");
+        cardContent.classList.add("card__item--students");
+        emailGroup.classList.add("card__group");
+        phoneGroup.classList.add("card__group");
+        addressGroup.classList.add("card__group");
+        emailIcon.classList.add("card__icon");
+        phoneIcon.classList.add("card__icon");
+        addressIcon.classList.add("card__icon");
+        coursesIcon.classList.add("card__icon");
+        enrolledCoursesGroup.classList.add(
+          "card__group",
+          "card__group--courses"
+        );
         buttonGroup.classList.add("card__button-group");
 
-        // Set text content and data attributes.
-        editButton.textContent = "Edit";
-        deleteButton.textContent = "Delete";
+        // Set icons
+        emailIcon.src = emailIconSvg;
+        phoneIcon.src = phoneIconSvg;
+        addressIcon.src = addressIconSvg;
+        coursesIcon.src = coursesSvg;
 
         // Set data attributes.
         editButton.dataset.id = item.id;
         deleteButton.dataset.id = item.id;
 
         // Append elements to the card.
-        cardContent.append(email, phone, address, enrolledCourses);
+
+        emailGroup.append(emailIcon, email);
+        phoneGroup.append(phoneIcon, phone);
+        addressGroup.append(addressIcon, address);
+        enrolledCoursesGroup.append(coursesIcon, enrolledCourses);
+        cardContent.append(
+          emailGroup,
+          phoneGroup,
+          addressGroup,
+          enrolledCoursesGroup
+        );
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
 
         // Delete student event.
         deleteButton.addEventListener("click", () => {
-          CourseManager.deleteStudent(item.id, "students");
+          Ui.promptDeleteConfirmation(() => {
+            CourseManager.deleteStudent(item.id, "students");
+          });
         });
 
         // Edit student event: pre-fill the form for editing.
@@ -168,11 +239,21 @@ class Ui {
         });
       } else if (item.type === "instructor") {
         // Create instructor card elements.
+        const emailGroup = document.createElement("div");
+        const phoneGroup = document.createElement("div");
+        const addressGroup = document.createElement("div");
+        const assignedCoursesGroup = document.createElement("div");
+        const buttonGroup = document.createElement("div");
+
+        const emailIcon = document.createElement("img");
+        const phoneIcon = document.createElement("img");
+        const addressIcon = document.createElement("img");
+        const coursesIcon = document.createElement("img");
+
         const email = document.createElement("p");
         const phone = document.createElement("p");
         const address = document.createElement("p");
         const assignedCourses = document.createElement("p");
-        const buttonGroup = document.createElement("div");
 
         // Set text content and classes.
         cardTitle.textContent = item.name;
@@ -181,30 +262,52 @@ class Ui {
         address.textContent = item.address;
         assignedCourses.textContent = `Assigned Courses: ${item.assignedCourses}`;
 
-        // Append elements to the card.
-        cardContent.append(email, phone, address, assignedCourses);
-
-        // Set text content for buttons.
-        deleteButton.textContent = "Delete";
-        editButton.textContent = "Edit";
-
-        // Add classes for buttons.
+        // Add classes.
+        dataContainer.classList.add("data--instructors");
+        cardContent.classList.add("card__item--instructors");
+        emailGroup.classList.add("card__group");
+        phoneGroup.classList.add("card__group");
+        addressGroup.classList.add("card__group");
+        emailIcon.classList.add("card__icon");
+        phoneIcon.classList.add("card__icon");
+        addressIcon.classList.add("card__icon");
+        coursesIcon.classList.add("card__icon");
+        assignedCoursesGroup.classList.add(
+          "card__group",
+          "card__group--courses"
+        );
         buttonGroup.classList.add("card__button-group");
-        deleteButton.classList.add("button", "card__delete");
-        editButton.classList.add("button", "card__edit");
+
+        // Set icons.
+        emailIcon.src = emailIconSvg;
+        phoneIcon.src = phoneIconSvg;
+        addressIcon.src = addressIconSvg;
+        coursesIcon.src = coursesSvg;
 
         // Set data attributes for buttons.
         deleteButton.dataset.id = item.id;
         editButton.dataset.id = item.id;
 
         // Append buttons to the card.
+
+        emailGroup.append(emailIcon, email);
+        phoneGroup.append(phoneIcon, phone);
+        addressGroup.append(addressIcon, address);
+        assignedCoursesGroup.append(coursesIcon, assignedCourses);
+        cardContent.append(
+          emailGroup,
+          phoneGroup,
+          addressGroup,
+          assignedCoursesGroup
+        );
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
 
         // Add event listeners for delete and edit buttons.
         deleteButton.addEventListener("click", () => {
-          // Delete the instructor.
-          CourseManager.deleteInstructor(item.id, "instructors");
+          Ui.promptDeleteConfirmation(() => {
+            CourseManager.deleteInstructor(item.id, "instructors");
+          });
         });
 
         editButton.addEventListener("click", () => {
@@ -253,33 +356,65 @@ class Ui {
         });
       } else if (id === "courses") {
         // Create course card elements.
+        const codeGroup = document.createElement("div");
+        const creditGroup = document.createElement("div");
+        const instructorGroup = document.createElement("div");
+        const studentsGroup = document.createElement("div");
+        const studentsListGroup = document.createElement("div");
+
+        const tagIcon = document.createElement("img");
+        const starIcon = document.createElement("img");
+        const studentsIcon = document.createElement("img");
+        const instructorIcon = document.createElement("img");
+
         const cardCode = document.createElement("p");
         const cardCredit = document.createElement("p");
         const cardInstructor = document.createElement("p");
 
         // Add classes to the elements.
+        dataContainer.className = "data";
+        card.classList.add("card--course");
+        cardContent.classList.add("card__item--course");
         cardCode.classList.add("card__code");
         cardCredit.classList.add("card__credit");
         cardInstructor.classList.add("card__instructor");
+        codeGroup.classList.add("card__group");
+        creditGroup.classList.add("card__group");
+        instructorGroup.classList.add("card__group");
+        studentsGroup.classList.add("card__group", "card__group--students");
+        tagIcon.classList.add("card__icon");
+        starIcon.classList.add("card__icon");
+        studentsIcon.classList.add("card__icon");
+        instructorIcon.classList.add("card__icon");
 
         // Set text content.
         cardTitle.textContent = item.name;
         cardCode.textContent = `Code: ${item.code}`;
-        cardCredit.textContent = `Credit: ${item.credit}`;
+        cardCredit.textContent = `Credits: ${item.credit}`;
         cardInstructor.textContent = `Instructor: ${
           item.instructor.name || "None"
         }`;
 
+        // Set icons
+        tagIcon.src = tag;
+        starIcon.src = star;
+        studentsIcon.src = studentIconSvg;
+        instructorIcon.src = instructorIconSvg;
+
         // Append elements to the card.
-        cardContent.append(cardCode, cardCredit, cardInstructor);
+        codeGroup.append(tagIcon, cardCode);
+        creditGroup.append(starIcon, cardCredit);
+        instructorGroup.append(instructorIcon, cardInstructor);
+        studentsGroup.append(studentsIcon);
 
         // Add enrolled students to the card.
         if (item.students && item.students.length > 0) {
           // Create a list of enrolled students.
-          const studentsList = document.createElement("ul");
+          const studentsListTitle = document.createElement("h4");
+          studentsListTitle.textContent = "Enrolled Students:";
 
-          // Set text content.
-          studentsList.textContent = "Enrolled Students:";
+          const studentsList = document.createElement("ul");
+          studentsList.classList.add("card__group-list");
 
           // Append students to the list.
           item.students.forEach((student) => {
@@ -289,20 +424,22 @@ class Ui {
           });
 
           // Append the list to the card.
-          cardContent.append(studentsList);
+          studentsListGroup.append(studentsListTitle, studentsList);
+          studentsGroup.append(studentsListGroup);
         }
+
+        cardContent.append(
+          instructorGroup,
+          codeGroup,
+          creditGroup,
+          studentsGroup
+        );
 
         // Add buttons to the card.
         const buttonGroup = document.createElement("div");
 
         // Add classes to the button group and buttons.
         buttonGroup.classList.add("card__button-group");
-        editButton.classList.add("button", "card__edit");
-        deleteButton.classList.add("button", "card__delete");
-
-        // Set text content
-        editButton.textContent = "Edit";
-        deleteButton.textContent = "Delete";
 
         // Set data attributes.
         editButton.dataset.id = item.id;
@@ -314,7 +451,9 @@ class Ui {
 
         // Add event listeners for delete and edit buttons.
         deleteButton.addEventListener("click", () => {
-          CourseManager.deleteCourses(item.id);
+          Ui.promptDeleteConfirmation(() => {
+            CourseManager.deleteCourses(item.id, "courses");
+          });
         });
 
         // Edit course event.
@@ -413,11 +552,10 @@ class Ui {
 
     // Loop through each dropdown.
     courseInputs.forEach((element) => {
-
       // Get the current value from the selected courses array.
       const currentValue = element.value;
       element.innerHTML = "";
-      
+
       // Create a default option.
       const defaultOption = document.createElement("option");
       defaultOption.value = "";
@@ -602,6 +740,38 @@ class Ui {
       // Restore the current selection.
       select.value = currentValue;
     });
+  }
+
+  // New method to handle delete confirmation using descriptive names
+  static promptDeleteConfirmation(deleteAction) {
+    const confirmModal = document.querySelector(".confirm-modal");
+    const confirmButton = document.querySelector(".button__confirm");
+    const cancelButton = document.querySelector(".button__no");
+
+    // Display the confirmation modal.
+    confirmModal.style.display = "flex";
+
+    // Handler for confirming the deletion.
+    const handleConfirmDeletion = () => {
+      deleteAction(); // Execute the deletion action.
+      resetConfirmationModal();
+    };
+
+    // Handler for canceling the deletion.
+    const handleCancelDeletion = () => {
+      resetConfirmationModal();
+    };
+
+    // Reset the modal by hiding it and removing event listeners.
+    function resetConfirmationModal() {
+      confirmModal.style.display = "none";
+      confirmButton.removeEventListener("click", handleConfirmDeletion);
+      cancelButton.removeEventListener("click", handleCancelDeletion);
+    }
+
+    // Add event listeners to the confirm and cancel buttons.
+    confirmButton.addEventListener("click", handleConfirmDeletion);
+    cancelButton.addEventListener("click", handleCancelDeletion);
   }
 }
 
