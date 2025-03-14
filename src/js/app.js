@@ -58,31 +58,38 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Validate course form.
-  function validateCourseForm() {
-    const storedCourses = JSON.parse(localStorage.getItem("courses")) || [];
-    console.log(storedCourses);
-    const findCode = storedCourses.find((course) => {
-      return course.code === courseCode.value;
-    });
-
-    if (findCode) {
-      showErrorModal();
-      return;
-    } else {
-      return courseName.value && courseCode.value && courseCredit.value;
-    }
-  }
-
-  // Function to display course code error modal
-  function showErrorModal() {
+  // Function to display error modal
+  function showErrorModal(message) {
     const errorModal = document.querySelector(".error-modal");
+    const errorMessage = document.querySelector(".error-modal-message");
 
+    errorMessage.textContent = message;
     errorModal.style.display = "block";
 
     setTimeout(() => {
       errorModal.style.display = "none";
     }, 3000);
+  }
+
+  // Validate course form.
+  function validateCourseForm() {
+    const storedCourses = JSON.parse(localStorage.getItem("courses")) || [];
+    console.log(storedCourses);
+
+    const findCode = storedCourses.find((course) => {
+      return course.code === courseCode.value;
+    });
+
+    if (!courseName.value || !courseCode.value || !courseCredit.value) {
+      showErrorModal("All fields are required!");
+      return false;
+    }
+
+    if (findCode) {
+      showErrorModal("This course code is already in use!");
+      return false;
+    }
+    return true;
   }
 
   // Course form submission.
@@ -118,13 +125,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Validate student form.
   function validateStudentForm(enrolledCourses) {
-    return (
-      studentName.value &&
-      studentEmail.value &&
-      studentPhone.value &&
-      studentAddress.value &&
-      enrolledCourses.length >= 1
-    );
+    if (
+      !studentName.value ||
+      !studentEmail.value ||
+      !studentPhone.value ||
+      !studentAddress.value
+    ) {
+      showErrorModal("All student fields are required!");
+      return false;
+    }
+
+    if (enrolledCourses.length < 1) {
+      showErrorModal("Please enroll at least one course!");
+      return false;
+    }
+    return true;
   }
 
   // Student form submission.
@@ -173,6 +188,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorContainer = instructorForm.querySelector(".form-error");
     if (errorContainer) errorContainer.innerText = ""; // clear previous messages
 
+    if (
+      !instructorName.value ||
+      !instructorEmail.value ||
+      !instructorPhone.value ||
+      !instructorAddress.value
+    ) {
+      showErrorModal("All instructor fields are required!");
+      return false;
+    }
+
+    if (assignedCourses.length < 1) {
+      showErrorModal("Please assign at least one course!");
+      return false;
+    }
+
     // Basic field validation.
     if (
       instructorName.value &&
@@ -199,10 +229,10 @@ document.addEventListener("DOMContentLoaded", () => {
             continue;
           }
 
-          // Display error message if the course is already assigned to an instructor.
-          if (errorContainer) {
-            errorContainer.innerText = `Course "${course.name}" already has an instructor. Please select another course.`;
-          }
+          // Display error modal if the course is already assigned to an instructor.
+          showErrorModal(
+            `Course "${course.name}" already has an instructor. Please select another course.`,
+          );
           return false;
         }
       }
