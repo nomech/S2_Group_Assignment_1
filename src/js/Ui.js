@@ -63,6 +63,15 @@ class Ui {
     // Open the form when the add button is clicked.
     addButton.addEventListener("click", () => {
       Ui.openForm(form, id);
+
+      // 🔹 Reset form header and button when opening "Add" for Courses, Students, and Instructors
+      const formHeader = form.querySelector(".form-modal__heading");
+      const formButton = form.querySelector(".form__button");
+
+      formHeader.textContent = `Add ${id}`;
+      formButton.textContent = `Add ${id}`;
+      formButton.dataset.action = "add";
+
       // Render course options.
       if (id === "students") {
         Ui.renderCourseOptions();
@@ -157,7 +166,7 @@ class Ui {
         coursesIcon.classList.add("card__icon");
         enrolledCoursesGroup.classList.add(
           "card__group",
-          "card__group--courses"
+          "card__group--courses",
         );
         buttonGroup.classList.add("card__button-group");
 
@@ -181,7 +190,7 @@ class Ui {
           emailGroup,
           phoneGroup,
           addressGroup,
-          enrolledCoursesGroup
+          enrolledCoursesGroup,
         );
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
@@ -197,21 +206,22 @@ class Ui {
         editButton.addEventListener("click", () => {
           const studentForm = document.querySelector(`.form-modal__students`);
           const nameInput = studentForm.querySelector(
-            ".form__input--student-name"
+            ".form__input--student-name",
           );
           const emailInput = studentForm.querySelector(
-            ".form__input--student-email"
+            ".form__input--student-email",
           );
           const phoneInput = studentForm.querySelector(
-            ".form__input--student-phone"
+            ".form__input--student-phone",
           );
           const addressInput = studentForm.querySelector(
-            ".form__input--student-address"
+            ".form__input--student-address",
           );
           const courseSelect = studentForm.querySelectorAll(
-            ".form__select--student"
+            ".form__select--student",
           );
           const formButton = studentForm.querySelector(".form__button");
+          const formHeader = studentForm.querySelector(".form-modal__heading");
 
           // Pre-fill the form with the student data.
           nameInput.value = item.name;
@@ -226,8 +236,9 @@ class Ui {
             }
           });
 
-          // Set the form button text
+          // Set the form button and header text
           formButton.textContent = "Edit Student";
+          formHeader.textContent = "Edit Student";
 
           // Set the form button data attributes.
           formButton.dataset.action = "edit";
@@ -274,7 +285,7 @@ class Ui {
         coursesIcon.classList.add("card__icon");
         assignedCoursesGroup.classList.add(
           "card__group",
-          "card__group--courses"
+          "card__group--courses",
         );
         buttonGroup.classList.add("card__button-group");
 
@@ -298,7 +309,7 @@ class Ui {
           emailGroup,
           phoneGroup,
           addressGroup,
-          assignedCoursesGroup
+          assignedCoursesGroup,
         );
         buttonGroup.append(editButton, deleteButton);
         cardContent.append(buttonGroup);
@@ -313,24 +324,27 @@ class Ui {
         editButton.addEventListener("click", () => {
           // Pre-fill the form for editing.
           const instructorForm = document.querySelector(
-            `.form-modal__instructors`
+            `.form-modal__instructors`,
           );
           const nameInput = instructorForm.querySelector(
-            ".form__input--instructor-name"
+            ".form__input--instructor-name",
           );
           const emailInput = instructorForm.querySelector(
-            ".form__input--instructor-email"
+            ".form__input--instructor-email",
           );
           const phoneInput = instructorForm.querySelector(
-            ".form__input--instructor-phone"
+            ".form__input--instructor-phone",
           );
           const addressInput = instructorForm.querySelector(
-            ".form__input--instructor-address"
+            ".form__input--instructor-address",
           );
           const courseSelect = instructorForm.querySelectorAll(
-            ".form__select--instructor"
+            ".form__select--instructor",
           );
           const formButton = instructorForm.querySelector(".form__button");
+          const formHeader = instructorForm.querySelector(
+            ".form-modal__heading",
+          );
 
           // Pre-fill the form with the instructor data.
           nameInput.value = item.name;
@@ -345,8 +359,11 @@ class Ui {
             }
           });
 
-          // Set the form button text and data attributes.
+          // Set the form button and header text
           formButton.textContent = "Edit Instructor";
+          formHeader.textContent = "Edit Instructor";
+
+          // Set the form button data attributes.
           formButton.dataset.action = "edit";
           formButton.dataset.instructorId = item.id;
 
@@ -432,7 +449,7 @@ class Ui {
           instructorGroup,
           codeGroup,
           creditGroup,
-          studentsGroup
+          studentsGroup,
         );
 
         // Add buttons to the card.
@@ -461,15 +478,16 @@ class Ui {
           // Pre-fill the form for editing.
           const courseForm = document.querySelector(`.form-modal__courses`);
           const nameInput = courseForm.querySelector(
-            ".form__input--course-name"
+            ".form__input--course-name",
           );
           const codeInput = courseForm.querySelector(
-            ".form__input--course-code"
+            ".form__input--course-code",
           );
           const creditInput = courseForm.querySelector(
-            ".form__input--course-credit"
+            ".form__input--course-credit",
           );
           const formButton = courseForm.querySelector(".form__button");
+          const formHeader = courseForm.querySelector(".form-modal__heading");
 
           // Pre-fill the form with the course data.
           nameInput.value = item.name;
@@ -478,6 +496,9 @@ class Ui {
 
           // Set the form button text.
           formButton.textContent = "Edit Course";
+
+          // Set the form header text.
+          formHeader.textContent = "Edit Course";
 
           // Set the form button data attributes.
           formButton.dataset.action = "edit";
@@ -692,7 +713,7 @@ class Ui {
     const coursesData = JSON.parse(localStorage.getItem("courses")) || [];
     // Select all instructor dropdowns.
     const selectElements = document.querySelectorAll(
-      ".form__select--instructor"
+      ".form__select--instructor",
     );
 
     // Filter out empty selections.
